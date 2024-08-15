@@ -1,0 +1,7 @@
+{
+  "name": "berlin-ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
