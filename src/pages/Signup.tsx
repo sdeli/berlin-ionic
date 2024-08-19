@@ -40,46 +40,44 @@ const Signup = () => {
 		<IonPage className={ styles.signupPage }>
 			<IonHeader>
 				<IonToolbar>
-					
-                    <IonButtons slot="start">
-                        <IonBackButton icon={ arrowBack } text="" className="custom-back" />
-                    </IonButtons>
+          <IonButtons slot="start">
+              <IonBackButton icon={ arrowBack } text="" className="custom-back" />
+          </IonButtons>
 
-                    <IonButtons slot="end">
-                        <IonButton className="custom-button">
-                            <IonIcon icon={ shapesOutline } />
-                        </IonButton>
-                    </IonButtons>
+          <IonButtons slot="end">
+              <IonButton className="custom-button">
+                  <IonIcon icon={ shapesOutline } />
+              </IonButton>
+          </IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-                <IonGrid className="ion-padding">
-                    <IonRow>
-                        <IonCol size="12" className={ styles.headingText }>
-                            <IonCardTitle>Sign up</IonCardTitle>
-                            <h5>Lets get to know each other</h5>
-                        </IonCol>
-                    </IonRow>
+        <IonGrid className="ion-padding">
+            <IonRow>
+                <IonCol size="12" className={ styles.headingText }>
+                    <IonCardTitle>Sign up</IonCardTitle>
+                    <h5>Lets get to know each other</h5>
+                </IonCol>
+            </IonRow>
 
-                    <IonRow className="ion-margin-top ion-padding-top">
-                        <IonCol size="12">
+            <IonRow className="ion-margin-top ion-padding-top">
+                <IonCol size="12">
 
-                            { fields.map(field => {
+                    { fields.map(field => {
 
-                                return <CustomField key={field.id} field={ field } errors={ errors } />;
-                            })}
+                        return <CustomField key={field.id} field={ field } errors={ errors } />;
+                    })}
 
-                            <IonButton className="custom-button" expand="block" onClick={ createAccount }>Create account</IonButton>
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
+                    <IonButton className="custom-button" expand="block" onClick={ createAccount }>Create account</IonButton>
+                </IonCol>
+            </IonRow>
+        </IonGrid>
 			</IonContent>
 
 			<IonFooter>
 				<IonGrid className="ion-no-margin ion-no-padding">
-
-                    <Action message="Already got an account?" text="Login" link="/login" />
-                    <Wave />
+          <Action message="Already got an account?" text="Login" link="/login" />
+          <Wave />
 				</IonGrid>
 			</IonFooter>
 		</IonPage>

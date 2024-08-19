@@ -31,11 +31,11 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-// import HomePage from './pages/HomePage';
-// import RadioPage from './pages/RadioPage';
-// import LibraryPage from './pages/LibraryPage';
-// import SearchPage from './pages/SearchPage';
-// import { playCircle, radio, library, search } from 'ionicons/icons';
+import HomePage from './pages/HomePage';
+import RadioPage from './pages/RadioPage';
+import LibraryPage from './pages/LibraryPage';
+import SearchPage from './pages/SearchPage';
+import { playCircle, radio, library, search } from 'ionicons/icons';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 
@@ -44,13 +44,7 @@ setupIonicReact();
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet>
-				
-				{/* <Route exact path="/home">
-					<Home />
-				</Route> */}
-
-				<Route exact path="/signup">
+        <Route exact path="/signup">
 					<Signup />
 				</Route>
 
@@ -58,12 +52,51 @@ const App: React.FC = () => (
 					<Login />
 				</Route>
 
-				{/* <Route exact path="/">
-					<Redirect to="/home" />
-				</Route> */}
-			</IonRouterOutlet>
+        <Route>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Redirect exact path="/" to="/home" />
+            <Route exact path="/home">
+              <HomePage />
+            </Route>
+            <Route exact path="/radio">
+              <RadioPage />
+            </Route>
+            <Route exact path="/library">
+              <LibraryPage />
+            </Route>
+            <Route exact path="/search">
+              <SearchPage />
+            </Route>
+
+            </IonRouterOutlet>
+
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="home" href="/home">
+                <IonIcon icon={playCircle} />
+                <IonLabel>Listen now</IonLabel>
+              </IonTabButton>
+
+              <IonTabButton tab="radio" href="/radio">
+                <IonIcon icon={radio} />
+                <IonLabel>Radio</IonLabel>
+              </IonTabButton>
+
+              <IonTabButton tab="library" href="/library">
+                <IonIcon icon={library} />
+                <IonLabel>Library</IonLabel>
+              </IonTabButton>
+
+              <IonTabButton tab="search" href="/search">
+                <IonIcon icon={search} />
+                <IonLabel>Search</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+				</Route>
+
     </IonReactRouter>
-    </IonApp>
+  </IonApp>
 );
 
 export default App;
