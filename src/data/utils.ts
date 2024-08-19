@@ -1,0 +1,65 @@
+import { useState } from "react";
+
+// Hook: useFormInput
+export interface UseFormInputReturn {
+  value: string;
+  reset: (newValue: string) => void;
+  onIonChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyUp: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+};
+
+export interface ValidationError {
+  id: string;
+  message: string;
+};
+
+export const useFormInput = (initialValue: string = ""): UseFormInputReturn => {
+  const [value, setValue] = useState<string>(initialValue);
+
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) => {
+    const tempValue = e.currentTarget.value;
+    setValue(tempValue);
+  };
+
+  return {
+    value,
+    reset: (newValue: string) => setValue(newValue),
+    onIonChange: handleChange,
+    onKeyUp: handleChange,
+  };
+};
+
+// Function: validateForm
+export interface LoginFormField {
+  id: string;
+  label: string;
+  required: boolean;
+  input: {
+    state: {
+      value: string;
+      reset: (newValue: string) => void;
+      onIonChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+      onKeyUp: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+    };
+  };
+};
+
+export const validateForm = (fields: LoginFormField[]): ValidationError[] => {
+  let errors: ValidationError[] = [];
+
+  fields.forEach((field) => {
+    if (field.required) {
+      const fieldValue = field.input.state.value;
+
+      if (fieldValue === "") {
+        const error: ValidationError = {
+          id: field.id,
+          message: `Please check your ${field.id}`,
+        };
+        errors.push(error);
+      }
+    }
+  });
+
+  return errors;
+};
