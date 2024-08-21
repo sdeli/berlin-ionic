@@ -2,16 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 import { WordDTO, WordMeta, WordSources } from '../dto';
 
-// Define a type for the slice state
-export interface Word {
-  ID: string;
-  source: WordSources;
-  originalUrl: string;
-  text: string;
-}
-
 export interface WordState {
-  words: Word[]
+  words: WordDTO[]
 }
 
 // Define the initial state using that type
@@ -29,14 +21,7 @@ export const wordSlice = createSlice({
       console.log('action')
       console.log(action)
       state.words = action.payload.map((wordDto) => {
-        const word: Word = {
-          ID: wordDto.ID,
-          source: wordDto.source,
-          originalUrl: wordDto.originalUrl,
-          text: wordDto.text,
-        }
-
-        return word;
+        return wordDto;
       });
     },
   },

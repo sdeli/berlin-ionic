@@ -42,18 +42,6 @@ const Login: React.FC = () => {
       }
     };
 
-    // const login = () => {
-    //     const validationErrors = validateForm(fields);
-    //     setErrors(validationErrors);
-
-    //     if (validationErrors.length === 0) {
-    //         console.log('validationErrors')
-    //         console.log(validationErrors)
-    //     }
-
-    //     console.log(fields);
-    // };
-
     useEffect(() => {
         return () => {
             fields.forEach((field: FormField) => field.input.state.reset(""));

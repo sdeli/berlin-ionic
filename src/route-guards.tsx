@@ -9,14 +9,10 @@ interface LoggedInGuardProps {
 
 export const UnprotectedPageGuard: React.FC<LoggedInGuardProps> = ({ element }) => {
   const auth = useSelector(selectIsAuth);
-  console.log('auth LoggedInGuard')
-  console.log(auth)
   return auth.isAuthenticated ? <Redirect exact to="/dic" /> : element;
 };
 
 export const ProtectedPageGuard: React.FC<LoggedInGuardProps> = ({ element }) => {
   const auth = useSelector(selectIsAuth);
-  console.log('auth LoggedInGuard')
-  console.log(auth)
   return auth.isAuthenticated ? element : <Redirect to="/login" />;
 };

@@ -1,27 +1,42 @@
 import React from 'react';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/react';
 import { DictionaryDash } from '../components/DictionaryDash';
+import { SensesTable } from '../components/SensesTable';
 
-const HomePage = () => (
+const HomePage: React.FC = () => {
+  
+  return (
   <>
     <IonHeader>
       <IonToolbar>
-        <IonTitle>Listen now</IonTitle>
+        <IonTitle>Dictionary</IonTitle>
       </IonToolbar>
     </IonHeader>
+
     <IonContent>
       <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-        }}
+        // style={{
+        //   display: 'flex',
+        //   justifyContent: 'center',
+        //   height: '100%',
+        //   flexDirection: 'column'
+        // }}
       >
-        <DictionaryDash></DictionaryDash>
+        <div>
+          <DictionaryDash></DictionaryDash>
+        </div>
+        <br></br>
+        <div style={{
+          maxWidth: '1000px',
+          margin: 'auto'
+        }}>
+          <SensesTable></SensesTable>
+        </div>
       </div>
     </IonContent>
   </>
-);
+
+  )
+}
 
 export default HomePage;

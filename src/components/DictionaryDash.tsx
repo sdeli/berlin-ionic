@@ -14,10 +14,6 @@ const styles = {
   }
 }
 export function DictionaryDash() {
-  const isAuth = useSelector(selectIsAuth);
-
-  console.log('selectIsAuth MainPage')
-  console.log(isAuth)
   return (
     <>
     <div style={styles.main}>

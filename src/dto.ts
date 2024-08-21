@@ -16,6 +16,28 @@ export interface WordDTO {
   source: WordSources;
   originalUrl: string;
   text: string;
+  meta: WordMeta;
+  senses: SenseDTO[];
+  updatedAt: Date;
+}
+
+export interface SenseDTO {
+  ID: string;
+  line: LineValue;
+  lines: SenseLineDTO[];
+  updatedAt: Date;
+}
+
+export interface SenseLineDTO {
+  ID: string;
+  source: LineValue;
+  target: LineValue;
+  updatedAt: Date;
+}
+
+export interface LineValue {
+  html: string;
+  text: string;
 }
 
 export interface LoginDto {
