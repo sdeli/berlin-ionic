@@ -9,21 +9,38 @@ import { validateForm, ValidationError } from '../data/utils';
 import CustomField from '../components/CustomField';
 import { Action } from '../components/Action';
 import { Wave } from '../components/Wave';
+import { AppDispatch } from '../redux/store';
+import { useDispatch } from 'react-redux';
+import { registerUserAction } from '../redux/AuthActions';
+import { useHistory } from 'react-router-dom';
 
 const Signup = () => {
-
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useHistory();
     const params = useParams();
     const fields = useSignupFields();
     const [ errors, setErrors ] = useState<ValidationError[]>([]);
 
-    const createAccount = () => {
+    const createAccount = async () => {
 
         const errors = validateForm(fields);
         setErrors(errors);
 
-        if (!errors.length) {
-
+        if (errors.length) {
+          console.error('register failed:', errors);
+          return;
             //  Submit your form here
+        }
+        const username = fields[0].input.state.value;
+        const password = fields[2].input.state.value;
+        try {
+          console.log('password')
+          console.log({ username, password })
+          await dispatch(
+            registerUserAction({ username, password }, navigate)
+          );
+        } catch (error) {
+          console.error('Registration failed:', error);
         }
     }
 

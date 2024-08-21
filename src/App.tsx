@@ -1,6 +1,8 @@
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import ReactDOM from 'react-dom/client'
+import { Provider } from 'react-redux';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -38,65 +40,87 @@ import SearchPage from './pages/SearchPage';
 import { playCircle, radio, library, search } from 'ionicons/icons';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import store from './redux/store';
+import React from 'react';
+import { LoginPageGuard, ProtectedPageGuard, UnprotectedPageGuard } from './route-guards';
 
 setupIonicReact();
-
+// ReactDOM.createRoot(document.getElementById('root')!).render(
+//   <React.StrictMode>
+//     <Provider store={store}>
+//     <App />
+//     </Provider>
+//   </React.StrictMode>,
+// )
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-        <Route exact path="/signup">
-					<Signup />
-				</Route>
+  <React.StrictMode>
+    <Provider store={store}>
+    <IonApp>
+      <IonReactRouter>
+          <Route exact path="/signup">
+            <UnprotectedPageGuard element={<Signup />} />
+          </Route>
 
-				<Route exact path="/login">
-					<Login />
-				</Route>
+          <Route exact path="/login">
+            <UnprotectedPageGuard element={<Login />} />
+          </Route>
+          
+          {/* <Route exact path="/signup">
+            <Signup />
+          </Route> */}
 
-        <Route>
-          <IonTabs>
-            <IonRouterOutlet>
-              <Redirect exact path="/" to="/home" />
-            <Route exact path="/home">
-              <HomePage />
-            </Route>
-            <Route exact path="/radio">
-              <RadioPage />
-            </Route>
-            <Route exact path="/library">
-              <LibraryPage />
-            </Route>
-            <Route exact path="/search">
-              <SearchPage />
-            </Route>
+          {/* <Route exact path="/login">
+            <Login />
+          </Route> */}
 
-            </IonRouterOutlet>
+          <Route path="/dic">
+            <ProtectedPageGuard element={
+              <IonTabs>
+              <IonRouterOutlet>
+                <Redirect exact path="/dic" to="/dic/home" />
+                <Route exact path="/dic/home">
+                  <HomePage />
+                </Route>
+                <Route exact path="/dic/radio">
+                  <RadioPage />
+                </Route>
+                <Route exact path="/dic/library">
+                  <LibraryPage />
+                </Route>
+                <Route exact path="/dic/search">
+                  <SearchPage />
+                </Route>
+              </IonRouterOutlet>
 
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="home" href="/home">
-                <IonIcon icon={playCircle} />
-                <IonLabel>Listen now</IonLabel>
-              </IonTabButton>
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="home" href="/dic/home">
+                  <IonIcon icon={playCircle} />
+                  <IonLabel>Listen now</IonLabel>
+                </IonTabButton>
 
-              <IonTabButton tab="radio" href="/radio">
-                <IonIcon icon={radio} />
-                <IonLabel>Radio</IonLabel>
-              </IonTabButton>
+                <IonTabButton tab="radio" href="/dic/radio">
+                  <IonIcon icon={radio} />
+                  <IonLabel>Radio</IonLabel>
+                </IonTabButton>
 
-              <IonTabButton tab="library" href="/library">
-                <IonIcon icon={library} />
-                <IonLabel>Library</IonLabel>
-              </IonTabButton>
+                <IonTabButton tab="library" href="/dic/library">
+                  <IonIcon icon={library} />
+                  <IonLabel>Library</IonLabel>
+                </IonTabButton>
 
-              <IonTabButton tab="search" href="/search">
-                <IonIcon icon={search} />
-                <IonLabel>Search</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-				</Route>
+                <IonTabButton tab="search" href="/dic/search">
+                  <IonIcon icon={search} />
+                  <IonLabel>Search</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+              </IonTabs>
+            } />
 
-    </IonReactRouter>
-  </IonApp>
+          </Route>
+      </IonReactRouter>
+    </IonApp>
+  </Provider>
+  </React.StrictMode>
 );
 
 export default App;

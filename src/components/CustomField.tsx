@@ -1,7 +1,7 @@
 import { IonInput, IonLabel } from "@ionic/react";
-import styles from "./CustomField.module.scss";
-import {LoginFormField, ValidationError} from '../data/utils';
 import { FormField } from '../data/fields';
+import { ValidationError } from '../data/utils';
+import styles from "./CustomField.module.scss";
 
 interface CustomFieldsProps {field: FormField, errors: ValidationError[]}
 

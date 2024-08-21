@@ -1,5 +1,6 @@
 import React from 'react';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/react';
+import { DictionaryDash } from '../components/DictionaryDash';
 
 const HomePage = () => (
   <>
@@ -17,7 +18,7 @@ const HomePage = () => (
           height: '100%',
         }}
       >
-        Listen now content
+        <DictionaryDash></DictionaryDash>
       </div>
     </IonContent>
   </>
