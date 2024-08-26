@@ -15,12 +15,7 @@ const HomePage: React.FC = () => {
 
     <IonContent>
       <div
-        // style={{
-        //   display: 'flex',
-        //   justifyContent: 'center',
-        //   height: '100%',
-        //   flexDirection: 'column'
-        // }}
+        style={{marginTop: '50px'}}
       >
         <div>
           <DictionaryDash></DictionaryDash>

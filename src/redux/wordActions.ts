@@ -15,3 +15,13 @@ export const fetchWordsAction = (searchedWord?: string): ThunkAction<void, RootS
     console.log('busted')
   }
 }
+
+export const setChosenWordAction = (wordID: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+  try {
+    dispatch(wordSlice.actions.setChosenWord(wordID))
+  } catch (error) {
+    console.log('error')
+    console.log(error)
+    console.log('busted')
+  }
+}
