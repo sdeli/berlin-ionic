@@ -1,16 +1,16 @@
 import { useSelector } from 'react-redux';
 import "./SensesTable.scss";
-import { selectChosenWordID, selectWords } from '../redux/wordSlice';
+import { selectChosenWord, selectWords } from '../redux/wordSlice';
 
 // const words = useSelector(selectWords);
 
 
 export const SensesTable = () => {
-  const words = useSelector(selectWords);
-  const chosenWordId = useSelector(selectChosenWordID);
-
-  const chosenWord = words.find((word) => word.ID === chosenWordId);
-  if (!chosenWord) return '';
+  const chosenWord = useSelector(selectChosenWord);
+  if (!chosenWord) {
+    return '';
+  }
+  
   if (!chosenWord.senses.length) return '';
 
   const meaningTables = chosenWord.senses.map((sense) => {

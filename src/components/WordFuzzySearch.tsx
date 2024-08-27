@@ -1,56 +1,60 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEventHandler, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './WordFuzzySearch.module.scss';
 import { useAppDispatch } from '../redux/hooks';
-import { fetchWordsAction } from '../actions';
-import { selectChosenWordID, selectWords } from '../redux/wordSlice';
+import { selectChosenWord, selectWords } from '../redux/wordSlice';
 import './WordFuzzySearch.module.scss'
-import { setChosenWordAction } from '../redux/wordActions';
+import Autocomplete, { AutocompleteChangeDetails, AutocompleteChangeReason, AutocompleteRenderInputParams } from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import { fetchChosenWordAction, fetchWordsAction } from '../redux/wordActions';
+
 export default function WordFuzzySearch() {
-  const [inputValue, setInputValue] = useState('');
+  const chosenWord = useSelector(selectChosenWord);
+
+  const defaultInputValue = chosenWord ? chosenWord.text : '';
+  const [inputValue, setInputValue] = useState(defaultInputValue);
 
   const dispatch = useAppDispatch();
-  // useEffect(() => {
-  //   dispatch(fetchWordsAction())
-  // }, [])
 
-  const words = useSelector(selectWords);
+  const words = useSelector(selectWords)
+  const wordsItems = words.map((word) => {
+    return {
+      label: word.text, 
+    }
+  });
   
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange: FormEventHandler<HTMLDivElement> = (event: ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     setInputValue(event.target.value);
     dispatch(fetchWordsAction(inputValue));
   };
 
-  const setChosenWord = (wordID: string) => {
-    dispatch(setChosenWordAction(wordID));
+  const onChangeHandler =  (
+    event: React.SyntheticEvent<Element, Event>,
+    value: { label: string; id: number } | null,
+    reason: AutocompleteChangeReason,
+    details?: AutocompleteChangeDetails<{ label: string; id: number }>
+  )  => {
+    const chosenWord = words.find((word) => word.text === value?.label)
+    if (chosenWord) {
+      setInputValue(chosenWord.text);
+      dispatch(fetchChosenWordAction(chosenWord.text));
+    }
   }
-
-  const wordsList = words.map((word) => {
-    return <li key={word.ID} onClick={() => {setChosenWord(word.ID)}}>{word.text} -- {word.source}</li>
-  })
-
-
-  const shouldDisplayDropdown = words.length ? 'block' : 'none';
-  // const dropdownVisible = words.words.length ? ''
-  // useEffect(() => {
-  // }, [inputValue, dispatch]);
 
   return (
   <div>
-    <div></div>
-    <div>
-      <input type="text"
-        value={inputValue}
-        onChange={handleInputChange} />
-    </div>
-    <div className="dropdown" style={{position: 'relative', background: 'black', display: shouldDisplayDropdown}}>
-      <div className="dropdown-content" style={{position: 'absolute', top: '0px', background: 'black', zIndex: '100'}}>
-        <ul className={styles['ul-basic']}>
-          {wordsList}
-        </ul>
-      </div>
-    </div>
+    <Autocomplete
+      disablePortal
+      onChange={onChangeHandler}
+      onInput={handleInputChange}
+      //@ts-ignore
+      options={wordsItems}
+      //@ts-ignore
+      value={inputValue}
+      sx={{ width: 300 }}
+      renderInput={(params: AutocompleteRenderInputParams) => <TextField {...params} label="Search" />}
+    />
   </div>
   )
 }
