@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
 import "./SensesTable.scss";
 import { selectChosenWord, selectWords } from '../redux/wordSlice';
-
+import { IonIcon } from '@ionic/react';
+import { addCircle } from 'ionicons/icons';
 // const words = useSelector(selectWords);
 
 
@@ -19,8 +20,27 @@ export const SensesTable = () => {
     const lines = sense.lines.map((line) => {
       return (
         <div key={line.ID} className="senses-table-row">		
-          <div className="senses-table-data">{line.source.text}</div>
-          <div className="senses-table-data">{line.target.text}</div>
+          <div className="senses-table-data" style={{paddingLeft: '10px'}}>{line.source.text}</div>
+          <div className="senses-table-data">
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between'
+            }}>
+            <span style={{width: '85%'}}> 
+              {line.target.text}
+            </span>
+            <span style={{
+              width: '15%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <IonIcon style={{ fontSize: '24px' }} icon={addCircle} />
+            </span>
+
+            </div>
+          </div>
         </div>
       )
     })

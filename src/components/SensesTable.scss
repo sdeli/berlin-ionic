@@ -31,13 +31,19 @@ $color-form-highlight: #EEEEEE;
 	
 	&:nth-of-type(odd) {
 		background:$color-form-highlight;
+    color: black;
 	}
 }
 
-.senses-table-data, .header__item {
-	flex: 1 1 20%;
+.header__item {
+  flex: 1 1 20%;
 	text-align:center;
 }
+.senses-table-data {
+  flex: 1 1 20%;
+  text-align: left;
+}
+
 
 .header__item {
 	text-transform:uppercase;
