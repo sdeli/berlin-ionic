@@ -1,18 +1,35 @@
 import { useSelector } from 'react-redux';
 import "./SensesTable.scss";
-import { selectChosenWord, selectWords } from '../redux/wordSlice';
+import { selectChosenWord } from '../redux/wordSlice';
 import { IonIcon } from '@ionic/react';
 import { addCircle } from 'ionicons/icons';
+import { AddSenseLineToListModal } from './AddSenseLineToListModal';
+import { useState } from 'react';
+import { SenseLineDTO } from '../dto';
 // const words = useSelector(selectWords);
 
 
 export const SensesTable = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [lineIdToAdd, setLineIdToAdd] = useState<SenseLineDTO | null>(null);
+
   const chosenWord = useSelector(selectChosenWord);
   if (!chosenWord) {
     return '';
   }
   
   if (!chosenWord.senses.length) return '';
+
+  const openModal = (line: SenseLineDTO) => {
+    setLineIdToAdd(line);
+    setIsModalOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setLineIdToAdd(null);
+    setIsModalOpen(false);
+  };
 
   const meaningTables = chosenWord.senses.map((sense) => {
     if (!sense.lines.length) return '';
@@ -27,18 +44,17 @@ export const SensesTable = () => {
               flexDirection: 'row',
               justifyContent: 'space-between'
             }}>
-            <span style={{width: '85%'}}> 
-              {line.target.text}
-            </span>
-            <span style={{
-              width: '15%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-              <IonIcon style={{ fontSize: '24px' }} icon={addCircle} />
-            </span>
-
+              <span style={{width: '85%'}}> 
+                {line.target.text}
+              </span>
+              <span style={{
+                width: '15%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <IonIcon onClick={() => {openModal(line)}} style={{ fontSize: '24px' }} icon={addCircle} />
+              </span>
             </div>
           </div>
         </div>
@@ -63,10 +79,14 @@ export const SensesTable = () => {
       <div>
         <h2>{chosenWord.text}</h2>
       </div>
-
-      {
-        meaningTables
-      }
+      <div>
+        {
+          meaningTables
+        }
+      </div>
+      <div>
+      <AddSenseLineToListModal isOpen={isModalOpen} onClose={closeModal} line={lineIdToAdd} />
+      </div>
     </div>
   )
 }
