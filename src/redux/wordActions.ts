@@ -4,11 +4,6 @@ import { RootState } from './store';
 import { fetchAllWords, fetchWord } from '../api/wordApi';
 import { wordSlice } from './wordSlice';
 
-interface WordFilter {
-  text: string,
-  limit: number
-}
-
 export const fetchWordsAction = (searchedWord?: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
   searchedWord = searchedWord || '';
   try {

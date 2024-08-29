@@ -67,3 +67,16 @@ export interface LoggedInUserDto {
   meta: WordMeta | null;
   updatedAt: Date;
 }
+
+export interface SenseListDto {
+  ID: string;
+  title: string;
+  senseLines: SenseLineDTO[];
+  belongsTo: UserDataDto;
+  updatedAt: Date;
+}
+
+export interface PostSenseListDto {
+  title: string
+  userid: string
+}

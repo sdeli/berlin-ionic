@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { wordSlice, WordState } from './wordSlice';
 import { authSlice, AuthState } from './authSlice';  // Correctly import default export
+import { wordListsSlice, WordListsState } from './wordListsSlice';
 
 interface AppState {
   auth: AuthState,
   words: WordState,
+  lists: WordListsState
 }
 
 export const loadState = () => {
@@ -34,6 +36,7 @@ const store = configureStore<AppState>({
   reducer: {
     auth: authSlice.reducer,
     words: wordSlice.reducer,
+    lists: wordListsSlice.reducer
   },
   preloadedState: persistedState,
 });

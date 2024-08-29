@@ -53,7 +53,11 @@ export const SensesTable = () => {
                 justifyContent: 'center',
                 alignItems: 'center'
               }}>
-                <IonIcon onClick={() => {openModal(line)}} style={{ fontSize: '24px' }} icon={addCircle} />
+                <IonIcon 
+                  onClick={() => {openModal(line)}} 
+                  style={{ fontSize: '24px', cursor: 'pointer' }}
+                  icon={addCircle} 
+                />
               </span>
             </div>
           </div>

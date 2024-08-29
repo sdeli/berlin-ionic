@@ -42,7 +42,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import store from './redux/store';
 import React from 'react';
-import { LoginPageGuard, ProtectedPageGuard, UnprotectedPageGuard } from './route-guards';
+import { ProtectedPageGuard, UnprotectedPageGuard } from './route-guards';
 
 setupIonicReact();
 // ReactDOM.createRoot(document.getElementById('root')!).render(
