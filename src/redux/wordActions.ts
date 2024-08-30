@@ -12,7 +12,6 @@ export const fetchWordsAction = (searchedWord?: string): ThunkAction<void, RootS
   } catch (error) {
     console.log('error')
     console.log(error)
-    console.log('busted')
   }
 }
 
@@ -25,6 +24,5 @@ export const fetchChosenWordAction = (searchedWord?: string): ThunkAction<void, 
   } catch (error) {
     console.log('error')
     console.log(error)
-    console.log('busted')
   }
 }

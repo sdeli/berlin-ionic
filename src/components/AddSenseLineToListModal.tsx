@@ -28,26 +28,21 @@ interface AddSenseLineToListModalProps {
 }
 export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineToListModalProps) => {
   const [newWordList, setNewWordList] = useState('');
-  console.log('newWordList111')
-  console.log(newWordList)
   const wordLists = useSelector(selectLists);
   const user = useSelector(selectUser);
   const dispatch = useAppDispatch();
 
   function addList() {
-    console.log('newWordList')
-    console.log(newWordList)
-    console.log(user)
     if (!user) return;
-    dispatch(postWordlistsAction(newWordList, user.id));
+    dispatch(postWordlistsAction(newWordList, user.id, wordLists));
   }
 
   const wordlists = wordLists.map((list) => {
     return (
-      <IonItem button={true}>
-      <IonLabel>{list.title}</IonLabel>
-      <IonNote slot="end">6</IonNote>
-    </IonItem>
+      <IonItem key={list.ID} button={true}>
+        <IonLabel>{list.title}</IonLabel>
+        <IonNote slot="end">6</IonNote>
+      </IonItem>
     )
   })
 
@@ -70,18 +65,19 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-          <p>{line?.target.text}</p>
-          <IonItem>
-            <IonInput
-              label="Add new list"
-              labelPlacement="stacked"
-              type="text"
-              placeholder="Add new list"
-              value={newWordList}
-              onIonInput={(e) => setNewWordList(e.detail.value || '')}
-            />
-            <IonButton disabled={!newWordList} onClick={addList}>Add new list</IonButton>
-          </IonItem>
+          <div title="add-new-list-area" style={{ padding: "0 17px"}}>
+            <IonItem>
+              <IonInput
+                label="Add new list"
+                labelPlacement="stacked"
+                type="text"
+                placeholder="Add new list"
+                value={newWordList}
+                onIonInput={(e) => setNewWordList(e.detail.value || '')}
+              />
+              <IonButton disabled={!newWordList} onClick={addList}>Add new list</IonButton>
+            </IonItem>
+          </div>
 
           <IonList inset={true}>
             {wordlists}

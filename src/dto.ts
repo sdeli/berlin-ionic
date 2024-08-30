@@ -76,7 +76,8 @@ export interface SenseListDto {
   updatedAt: Date;
 }
 
-export interface PostSenseListDto {
-  title: string
-  userid: string
+export interface CreateSenseListDto {
+  title: string;
+  senseLines?: SenseLineDTO[];
+  userId: string;
 }
