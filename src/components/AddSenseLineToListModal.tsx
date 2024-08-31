@@ -20,7 +20,8 @@ import { useSelector } from 'react-redux';
 import { selectLists } from '../redux/wordListsSlice';
 import { selectUser } from '../redux/authSlice';
 import { useAppDispatch } from '../redux/hooks';
-import { fetchWordlistsAction, postWordlistsAction } from '../redux/wordListsActions';
+import { postWordlistsAction } from '../redux/wordListsActions';
+import WordListLocalMenu from './WordListLocalMenu';
 interface AddSenseLineToListModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -28,10 +29,10 @@ interface AddSenseLineToListModalProps {
 }
 export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineToListModalProps) => {
   const [newWordList, setNewWordList] = useState('');
+  const [zIndex, setZIndex] = useState(600);
   const wordLists = useSelector(selectLists);
   const user = useSelector(selectUser);
   const dispatch = useAppDispatch();
-
   function addList() {
     if (!user) return;
     dispatch(postWordlistsAction(newWordList, user.id, wordLists));
@@ -39,10 +40,20 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
 
   const wordlists = wordLists.map((list) => {
     return (
+      <div style={{position: 'relative', }}>
       <IonItem key={list.ID} button={true}>
         <IonLabel>{list.title}</IonLabel>
         <IonNote slot="end">6</IonNote>
       </IonItem>
+
+      <div style={{
+          position: 'absolute',
+          top: '6px',
+          right: '11px',
+        }}>
+        <WordListLocalMenu></WordListLocalMenu>
+      </div>
+      </div>
     )
   })
 
