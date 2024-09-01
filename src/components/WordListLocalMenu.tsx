@@ -96,8 +96,16 @@ export default function MenuListComposition({onEdit, onDelete}: props) {
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
                   >
-                    <MenuItem onClick={handleClose}>Edit</MenuItem>
-                    <MenuItem onClick={handleClose}>Delete</MenuItem>
+                    <MenuItem onClick={(event) => {
+                      handleClose(event);
+                      onEdit();
+                    }}>Edit</MenuItem>
+                    
+                    <MenuItem onClick={(event) => {
+                      handleClose(event);
+                      onDelete();
+                    }}
+                    >Delete</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

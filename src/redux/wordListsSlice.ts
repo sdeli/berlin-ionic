@@ -1,9 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 import { SenseListDto, WordDTO, WordMeta, WordSources } from '../dto';
+import { act } from 'react';
 
 export interface WordListsState {
   lists: SenseListDto[],
+}
+
+export interface DeleteWordListPayload {
+  wordListId: string
 }
 
 // Define the initial state using that type
@@ -20,6 +25,9 @@ export const wordListsSlice = createSlice({
       state.lists = action.payload.map((lists) => {
         return lists;
       });
+    },
+    delete: (state: WordListsState, action: PayloadAction<DeleteWordListPayload>) => {
+      state.lists = state.lists.filter((senseList) => senseList.ID !== action.payload.wordListId)
     },
   },
 })

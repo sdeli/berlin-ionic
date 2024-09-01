@@ -14,13 +14,13 @@ import {
   IonLabel,
   IonNote,
 } from '@ionic/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SenseLineDTO } from '../dto';
 import { useSelector } from 'react-redux';
 import { selectLists } from '../redux/wordListsSlice';
 import { selectUser } from '../redux/authSlice';
 import { useAppDispatch } from '../redux/hooks';
-import { postWordlistsAction } from '../redux/wordListsActions';
+import { deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction } from '../redux/wordListsActions';
 import WordListLocalMenu from './WordListLocalMenu';
 interface AddSenseLineToListModalProps {
   isOpen: boolean;
@@ -28,31 +28,53 @@ interface AddSenseLineToListModalProps {
   line: SenseLineDTO | null;
 }
 export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineToListModalProps) => {
-  const [newWordList, setNewWordList] = useState('');
-  const [zIndex, setZIndex] = useState(600);
-  const wordLists = useSelector(selectLists);
-  const user = useSelector(selectUser);
+
   const dispatch = useAppDispatch();
+  const user = useSelector(selectUser);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchWordlistsByUserIdAction(user.id));
+    }
+  }, [dispatch, user]);
+
+
+  const [newWordList, setNewWordList] = useState('');
+
+  const wordLists = useSelector(selectLists);
+
+
   function addList() {
     if (!user) return;
     dispatch(postWordlistsAction(newWordList, user.id, wordLists));
+    setNewWordList('')
   }
 
   const wordlists = wordLists.map((list) => {
-    return (
-      <div style={{position: 'relative', }}>
-      <IonItem key={list.ID} button={true}>
-        <IonLabel>{list.title}</IonLabel>
-        <IonNote slot="end">6</IonNote>
-      </IonItem>
+    const editList = () => {
+      console.log(list.ID);
+      
+    }
+    
+    const deleteList = () => {
+      console.log(11);
+      dispatch(deleteWordlistsAction(list.ID));
+    }
 
-      <div style={{
-          position: 'absolute',
-          top: '6px',
-          right: '11px',
-        }}>
-        <WordListLocalMenu></WordListLocalMenu>
-      </div>
+    return (
+      <div key={list.ID} style={{position: 'relative', }}>
+        <IonItem button={true}>
+          <IonLabel>{list.title}</IonLabel>
+          <IonNote slot="end">6</IonNote>
+        </IonItem>
+
+        <div style={{
+            position: 'absolute',
+            top: '6px',
+            right: '11px',
+          }}>
+          <WordListLocalMenu onDelete={deleteList} onEdit={editList}></WordListLocalMenu>
+        </div>
       </div>
     )
   })
@@ -84,13 +106,15 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
                 type="text"
                 placeholder="Add new list"
                 value={newWordList}
-                onIonInput={(e) => setNewWordList(e.detail.value || '')}
+                onIonInput={(e) => {
+                  setNewWordList(e.detail.value || '')
+                }}
               />
               <IonButton disabled={!newWordList} onClick={addList}>Add new list</IonButton>
             </IonItem>
           </div>
 
-          <IonList inset={true}>
+          <IonList style={{height: '100%'}} inset={true}>
             {wordlists}
           </IonList>
         </IonContent>

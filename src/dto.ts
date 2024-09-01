@@ -81,3 +81,7 @@ export interface CreateSenseListDto {
   senseLines?: SenseLineDTO[];
   userId: string;
 }
+
+export interface FetchSenseListByUserIdDto {
+  userId: string;
+}
