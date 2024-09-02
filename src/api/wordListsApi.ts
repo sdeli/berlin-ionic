@@ -1,4 +1,4 @@
-import { CreateSenseListDto, FetchSenseListByUserIdDto, SenseListDto } from '../dto';
+import { AddSenseToWordlistsDto, CreateSenseListDto, FetchSenseListByUserIdDto, SenseListDto } from '../dto';
 import axios, { AxiosRequestConfig } from 'axios';
 
 const url = 'http://localhost:3000/sense-list';
@@ -31,4 +31,12 @@ export async function postWordList(title: string, userId: string) {
 export async function deleteWordList(listId: string) {
   const deleteUrl = url + '/' + listId
   return await axios.delete<void>(deleteUrl)
+}
+
+export async function addSenseToWordlists(lineId: string, listId: string) {
+  const addurl = url + '/add-sense'
+  const data: AddSenseToWordlistsDto = { lineId, listId };
+  const response = await axios.post<SenseListDto>(addurl, data)
+  const wordsLists = response.data;
+  return wordsLists;
 }

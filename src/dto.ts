@@ -82,6 +82,11 @@ export interface CreateSenseListDto {
   userId: string;
 }
 
+export interface AddSenseToWordlistsDto {
+  lineId: string;
+  listId: string;
+}
+
 export interface FetchSenseListByUserIdDto {
   userId: string;
 }

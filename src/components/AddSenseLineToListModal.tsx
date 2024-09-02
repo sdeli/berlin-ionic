@@ -20,7 +20,7 @@ import { useSelector } from 'react-redux';
 import { selectLists } from '../redux/wordListsSlice';
 import { selectUser } from '../redux/authSlice';
 import { useAppDispatch } from '../redux/hooks';
-import { deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction } from '../redux/wordListsActions';
+import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction } from '../redux/wordListsActions';
 import WordListLocalMenu from './WordListLocalMenu';
 interface AddSenseLineToListModalProps {
   isOpen: boolean;
@@ -28,7 +28,6 @@ interface AddSenseLineToListModalProps {
   line: SenseLineDTO | null;
 }
 export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineToListModalProps) => {
-
   const dispatch = useAppDispatch();
   const user = useSelector(selectUser);
 
@@ -61,11 +60,26 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
       dispatch(deleteWordlistsAction(list.ID));
     }
 
+    const addSenseToWordlists = (lineId: string, listId: string) => {
+      dispatch(addSenseToWordlistsAction(lineId, listId));
+    }
+
     return (
       <div key={list.ID} style={{position: 'relative', }}>
         <IonItem button={true}>
           <IonLabel>{list.title}</IonLabel>
           <IonNote slot="end">6</IonNote>
+        <div style={{
+            position: 'absolute',
+            top: '5px',
+            right: '63px',
+          }}>
+          <IonButton size="small" onClick={() => {
+            if (!line) return;
+            addSenseToWordlists(line.ID, list.ID)
+          }}>add word</IonButton>
+
+        </div>
         </IonItem>
 
         <div style={{
@@ -98,6 +112,10 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
+          <div>
+            <p>german: {line?.source.text}</p>
+            <p>english: {line?.target.text}</p>
+          </div>
           <div title="add-new-list-area" style={{ padding: "0 17px"}}>
             <IonItem>
               <IonInput

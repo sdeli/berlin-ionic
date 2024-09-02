@@ -26,6 +26,15 @@ export const wordListsSlice = createSlice({
         return lists;
       });
     },
+    replaceOne: (state: WordListsState, action: PayloadAction<SenseListDto>) => {
+      state.lists = state.lists.map((list) => {
+        if (list.ID === action.payload.ID) {
+          return action.payload;
+        } else {
+          return list;
+        }
+      });
+    },
     delete: (state: WordListsState, action: PayloadAction<DeleteWordListPayload>) => {
       state.lists = state.lists.filter((senseList) => senseList.ID !== action.payload.wordListId)
     },
