@@ -15,6 +15,10 @@ $color-form-highlight: #EEEEEE;
   // margin-bottom: $base-spacing-unit;
   margin: 24px 10px 10px 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  max-width: 980px;  /* Sets the maximum width to 980px */
+  width: 100%;       /* Allows the div to scale down responsively */
+  min-width: 320px;  /* Optional: Sets a minimum width to ensure readability on very small screens */
+  margin: 0 auto;  
 }
 
 .senses-table-header {

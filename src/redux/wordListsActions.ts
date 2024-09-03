@@ -61,3 +61,12 @@ export const addSenseToWordlistsAction = (lineId: string, listId: string): Thunk
     console.log('busted')
   }
 }
+
+export const setActiveListIdAction = (listId: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+  try {
+    dispatch(wordListsSlice.actions.setActiveListId(listId))
+  } catch (error) {
+    console.log('error')
+    console.log(error)
+  }
+}

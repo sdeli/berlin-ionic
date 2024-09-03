@@ -5,15 +5,17 @@ import { act } from 'react';
 
 export interface WordListsState {
   lists: SenseListDto[],
+  activeListId: null | string;
 }
 
 export interface DeleteWordListPayload {
-  wordListId: string
+  wordListId: string;
 }
 
 // Define the initial state using that type
 export const initialState: WordListsState = {
   lists: [],
+  activeListId: null,
 }
 
 export const wordListsSlice = createSlice({
@@ -38,6 +40,9 @@ export const wordListsSlice = createSlice({
     delete: (state: WordListsState, action: PayloadAction<DeleteWordListPayload>) => {
       state.lists = state.lists.filter((senseList) => senseList.ID !== action.payload.wordListId)
     },
+    setActiveListId: (state: WordListsState, action: PayloadAction<string>) => {
+      state.activeListId = action.payload;
+    },
   },
 })
 
@@ -45,5 +50,6 @@ export const { replace } = wordListsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectLists = (state: RootState) => state.lists.lists
+export const selectActiveListId = (state: RootState) => state.lists.activeListId
 
 export default wordListsSlice.reducer

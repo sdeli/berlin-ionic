@@ -35,9 +35,11 @@ export const SensesTable = () => {
     if (!sense.lines.length) return '';
 
     const lines = sense.lines.map((line) => {
+      const highlightedChosenWord = `<strong>${chosenWord.text}</strong>`;
+      const sourceText = line.source.text.replace(chosenWord.text, highlightedChosenWord)
       return (
         <div key={line.ID} className="senses-table-row">		
-          <div className="senses-table-data" style={{paddingLeft: '10px'}}>{line.source.text}</div>
+          <div className="senses-table-data" style={{paddingLeft: '10px'}} dangerouslySetInnerHTML={{__html: sourceText}}></div>
           <div className="senses-table-data">
             <div style={{
               display: 'flex',

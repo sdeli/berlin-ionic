@@ -34,7 +34,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import HomePage from './pages/HomePage';
-import RadioPage from './pages/RadioPage';
+import WordListPage from './pages/WordListPage';
 import LibraryPage from './pages/LibraryPage';
 import SearchPage from './pages/SearchPage';
 import { playCircle, radio, library, search } from 'ionicons/icons';
@@ -81,8 +81,8 @@ const App: React.FC = () => (
                 <Route exact path="/dic/home">
                   <HomePage />
                 </Route>
-                <Route exact path="/dic/radio">
-                  <RadioPage />
+                <Route exact path="/dic/list/:id?">
+                  <WordListPage />
                 </Route>
                 <Route exact path="/dic/library">
                   <LibraryPage />
@@ -98,9 +98,9 @@ const App: React.FC = () => (
                   <IonLabel>Listen now</IonLabel>
                 </IonTabButton>
 
-                <IonTabButton tab="radio" href="/dic/radio">
+                <IonTabButton tab="radio" href="/dic/list">
                   <IonIcon icon={radio} />
-                  <IonLabel>Radio</IonLabel>
+                  <IonLabel>List</IonLabel>
                 </IonTabButton>
 
                 <IonTabButton tab="library" href="/dic/library">

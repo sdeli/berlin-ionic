@@ -20,8 +20,10 @@ import { useSelector } from 'react-redux';
 import { selectLists } from '../redux/wordListsSlice';
 import { selectUser } from '../redux/authSlice';
 import { useAppDispatch } from '../redux/hooks';
-import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction } from '../redux/wordListsActions';
+import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction, setActiveListIdAction } from '../redux/wordListsActions';
 import WordListLocalMenu from './WordListLocalMenu';
+import { useHistory } from 'react-router-dom';
+
 interface AddSenseLineToListModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -30,6 +32,7 @@ interface AddSenseLineToListModalProps {
 export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineToListModalProps) => {
   const dispatch = useAppDispatch();
   const user = useSelector(selectUser);
+  const navigate = useHistory();
 
   useEffect(() => {
     if (user) {
@@ -60,26 +63,32 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
       dispatch(deleteWordlistsAction(list.ID));
     }
 
-    const addSenseToWordlists = (lineId: string, listId: string) => {
+    const addSenseToWordlists = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lineId: string, listId: string) => {
+      e.stopPropagation();
+      e.preventDefault();
       dispatch(addSenseToWordlistsAction(lineId, listId));
+    }
+
+    const navigateToList = (listId: string) => {
+      dispatch(setActiveListIdAction(listId));
+      navigate.push(`/dic/list/${listId}`);
     }
 
     return (
       <div key={list.ID} style={{position: 'relative', }}>
-        <IonItem button={true}>
+        <IonItem button={true} onClick={() => {navigateToList(list.ID)}}>
           <IonLabel>{list.title}</IonLabel>
           <IonNote slot="end">6</IonNote>
-        <div style={{
-            position: 'absolute',
-            top: '5px',
-            right: '63px',
-          }}>
-          <IonButton size="small" onClick={() => {
-            if (!line) return;
-            addSenseToWordlists(line.ID, list.ID)
-          }}>add word</IonButton>
-
-        </div>
+          <div style={{
+              position: 'absolute',
+              top: '5px',
+              right: '63px',
+            }}>
+            <IonButton size="small" onClick={(e) => {
+              if (!line) return;
+              addSenseToWordlists(e, line.ID, list.ID)
+            }}>add word</IonButton>
+          </div>
         </IonItem>
 
         <div style={{

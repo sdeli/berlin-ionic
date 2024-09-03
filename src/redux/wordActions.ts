@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { AnyAction, ThunkAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import { fetchAllWords, fetchWord } from '../api/wordApi';
