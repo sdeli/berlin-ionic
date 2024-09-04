@@ -26,20 +26,17 @@ import { useHistory } from 'react-router-dom';
 
 interface WordListsProps {
   wordLists: SenseListDto[]
-  onAddNewList: (newWordListName: string) => {},
-  onDeleteList: (newWordListId: string) => {},
-  onAddSenseToWordlist: (listId: string) => {},
   line: SenseLineDTO | null
+  onAddNewList: (newWordListName: string) => void,
+  onDeleteList: (listId: string) => void,
+  onAddSenseToWordlist: (listId: string, lineId: string) => void,
 }
 export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist, onDeleteList }: WordListsProps) => {
   const dispatch = useAppDispatch();
   const navigate = useHistory();
-
   const [newWordList, setNewWordList] = useState('');
 
   function addListEv() {
-    console.log('newWordList')
-    console.log(newWordList)
     onAddNewList(newWordList);
     setNewWordList('')
   }
@@ -50,8 +47,6 @@ export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist,
     }
 
     const deleteListEv = (listId: string) => {
-      console.log('deleteList listId')
-      console.log(listId);
       onDeleteList(listId);
     }
 
@@ -60,12 +55,12 @@ export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist,
       navigate.push(`/dic/list/${listId}`);
     }
 
-    const addSenseToWordlistsEv = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, listId: string) => {
+    const addSenseToWordlistsEv = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, listId: string, lineId: string) => {
       e.stopPropagation();
       e.preventDefault();
       console.log('addSenseToWordlistsEv')
       console.log(listId);
-      onAddSenseToWordlist(listId);
+      onAddSenseToWordlist(listId, lineId);
     }
 
     return (
@@ -73,15 +68,18 @@ export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist,
         <IonItem button={true} onClick={() => {navigateToList(list.ID)}}>
           <IonLabel>{list.title}</IonLabel>
           <IonNote slot="end">6</IonNote>
-          <div style={{
-              position: 'absolute',
-              top: '5px',
-              right: '63px',
-            }}>
-            <IonButton size="small" onClick={(e) => {
-              addSenseToWordlistsEv(e, list.ID)
-            }}>add word</IonButton>
-          </div>
+          {!!line && 
+            <div style={{
+                position: 'absolute',
+                top: '5px',
+                right: '63px',
+              }}>
+              <IonButton size="small" onClick={(e) => {
+                if (!line) return;
+                addSenseToWordlistsEv(e, list.ID, line.ID)
+              }}>add word</IonButton>
+            </div>
+          }
         </IonItem>
 
         <div style={{
