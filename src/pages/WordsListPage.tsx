@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { selectLists } from '../redux/wordListsSlice';
 
-const WordListPage = () => {
+const WordsListPage = () => {
   const { id: activeListId } = useParams<{ id: string }>();
   const wordLists = useSelector(selectLists);
   const activeList = wordLists.find((list => list.ID === activeListId));
-  if (!activeList) return;
+  if (!activeList) return (<></>);
 
   const lines = activeList.senseLines.map((line) => {
       // const highlightedWord = `<strong>${line.source.text}</strong>`;
@@ -63,4 +63,4 @@ const WordListPage = () => {
 );
 }
 
-export default WordListPage;
+export default WordsListPage;

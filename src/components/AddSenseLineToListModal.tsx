@@ -63,7 +63,7 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
       dispatch(deleteWordlistsAction(list.ID));
     }
 
-    const addSenseToWordlists = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lineId: string, listId: string) => {
+    const addSenseToWordlist = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lineId: string, listId: string) => {
       e.stopPropagation();
       e.preventDefault();
       dispatch(addSenseToWordlistsAction(lineId, listId));
@@ -86,7 +86,7 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
             }}>
             <IonButton size="small" onClick={(e) => {
               if (!line) return;
-              addSenseToWordlists(e, line.ID, list.ID)
+              addSenseToWordlist(e, line.ID, list.ID)
             }}>add word</IonButton>
           </div>
         </IonItem>
