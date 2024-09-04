@@ -55,12 +55,12 @@ export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist,
       navigate.push(`/dic/list/${listId}`);
     }
 
-    const addSenseToWordlistsEv = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, listId: string, lineId: string) => {
+    const addSenseToWordlistsEv = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lineId: string, listId: string) => {
       e.stopPropagation();
       e.preventDefault();
       console.log('addSenseToWordlistsEv')
       console.log(listId);
-      onAddSenseToWordlist(listId, lineId);
+      onAddSenseToWordlist(lineId, listId);
     }
 
     return (
@@ -76,7 +76,7 @@ export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist,
               }}>
               <IonButton size="small" onClick={(e) => {
                 if (!line) return;
-                addSenseToWordlistsEv(e, list.ID, line.ID)
+                addSenseToWordlistsEv(e, line.ID, list.ID)
               }}>add word</IonButton>
             </div>
           }

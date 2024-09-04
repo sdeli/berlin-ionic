@@ -37,6 +37,7 @@ export const SensesTable = () => {
     const lines = sense.lines.map((line) => {
       const highlightedChosenWord = `<strong>${chosenWord.text}</strong>`;
       const sourceText = line.source.text.replace(chosenWord.text, highlightedChosenWord)
+      
       return (
         <div key={line.ID} className="senses-table-row">		
           <div className="senses-table-data" style={{paddingLeft: '10px'}} dangerouslySetInnerHTML={{__html: sourceText}}></div>
@@ -68,7 +69,7 @@ export const SensesTable = () => {
     })
 
     return (
-      <div key={sense.ID} className="senses-table">
+      <div key={sense.ID} className="senses-table" style={{marginBottom: '50px'}}>
         <div className="senses-table-header">
           <div className="header__item"><a id="name" className="filter__link" href="#">{sense.line.text}</a></div>
         </div>

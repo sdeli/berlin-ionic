@@ -34,7 +34,6 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import HomePage from './pages/HomePage';
-import WordsListPage from './pages/WordsListPage';
 import LibraryPage from './pages/LibraryPage';
 import SearchPage from './pages/SearchPage';
 import { playCircle, radio, library, search } from 'ionicons/icons';
@@ -43,7 +42,8 @@ import Login from './pages/Login';
 import store from './redux/store';
 import React from 'react';
 import { ProtectedPageGuard, UnprotectedPageGuard } from './route-guards';
-import ListsPage from './pages/ListsPage';
+import SenseListPage from './pages/SenseListPage';
+import { WordListPage } from './pages/WordListsPage';
 
 setupIonicReact();
 // ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -82,8 +82,11 @@ const App: React.FC = () => (
                 <Route exact path="/dic/home">
                   <HomePage />
                 </Route>
-                <Route exact path="/dic/list/:id?">
-                  <ListsPage />
+                <Route exact path="/dic/list/:id">
+                  <SenseListPage />
+                </Route>
+                <Route exact path="/dic/list/">
+                  <WordListPage />
                 </Route>
                 <Route exact path="/dic/library">
                   <LibraryPage />

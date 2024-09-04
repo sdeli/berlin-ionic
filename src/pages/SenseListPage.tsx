@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { selectLists } from '../redux/wordListsSlice';
 
-const WordsListPage = () => {
+const SenseListPage = () => {
   const { id: activeListId } = useParams<{ id: string }>();
   const wordLists = useSelector(selectLists);
   const activeList = wordLists.find((list => list.ID === activeListId));
@@ -63,4 +63,4 @@ const WordsListPage = () => {
 );
 }
 
-export default WordsListPage;
+export default SenseListPage;
