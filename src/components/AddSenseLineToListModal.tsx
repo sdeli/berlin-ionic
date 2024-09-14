@@ -14,15 +14,13 @@ import {
   IonLabel,
   IonNote,
 } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SenseLineDTO } from '../dto';
 import { useSelector } from 'react-redux';
 import { selectLists } from '../redux/wordListsSlice';
 import { selectUser } from '../redux/authSlice';
 import { useAppDispatch } from '../redux/hooks';
 import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction, setActiveListIdAction } from '../redux/wordListsActions';
-import WordListLocalMenu from './WordListLocalMenu';
-import { useHistory } from 'react-router-dom';
 import { WordLists } from './WordLists';
 
 interface AddSenseLineToListModalProps {

@@ -17,7 +17,7 @@ const SenseListPage = () => {
     dispatch(removeSenseFromWordlistAction(lineId, listId));
   }
 
-  const lines = activeList.senseLines.map((line) => {
+  let lines = !activeList.senseLines ? 'no line to show' : activeList.senseLines.map((line) => {
       const sourceText = line.source.text;
 
       return (

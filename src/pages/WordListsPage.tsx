@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux';
 import { selectLists } from '../redux/wordListsSlice';
 import { selectUser } from '../redux/authSlice';
 import { useAppDispatch } from '../redux/hooks';
-import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction, setActiveListIdAction } from '../redux/wordListsActions';
+import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction, setActiveListIdAction, updateListAction } from '../redux/wordListsActions';
 import { WordLists } from '../components/WordLists';
+import { SenseListDto } from '../dto';
 
 export const WordListPage = () => {
   const dispatch = useAppDispatch();
@@ -32,6 +33,17 @@ export const WordListPage = () => {
     dispatch(addSenseToWordlistsAction(lineId, listId));
   }
 
+  const updateListName = (newName: string, listId: string) => {
+    const listToUpdate = wordLists.find((list) => list.ID === listId);
+    if (!listToUpdate) return;
+    
+    const tempList: SenseListDto = {
+      ...listToUpdate,
+      title: newName
+    }
+    dispatch(updateListAction(tempList));
+  }
+
   return (
     <WordLists 
     wordLists={wordLists} 
@@ -39,6 +51,7 @@ export const WordListPage = () => {
     onAddNewList={addList} 
     onDeleteList={deleteList} 
     onAddSenseToWordlist={addSenseToWordlist}
+    onUpdateListName={updateListName}
   ></WordLists>
   );
 }

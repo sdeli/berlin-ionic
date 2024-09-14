@@ -23,6 +23,7 @@ import { useAppDispatch } from '../redux/hooks';
 import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction, setActiveListIdAction } from '../redux/wordListsActions';
 import WordListLocalMenu from './WordListLocalMenu';
 import { useHistory } from 'react-router-dom';
+import WordListItem from './WordListsItem';
 
 interface WordListsProps {
   wordLists: SenseListDto[]
@@ -30,8 +31,9 @@ interface WordListsProps {
   onAddNewList: (newWordListName: string) => void,
   onDeleteList: (listId: string) => void,
   onAddSenseToWordlist: (listId: string, lineId: string) => void,
+  onUpdateListName: (newName: string, id: string) => void;
 }
-export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist, onDeleteList }: WordListsProps) => {
+export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist, onDeleteList, onUpdateListName }: WordListsProps) => {
   const dispatch = useAppDispatch();
   const navigate = useHistory();
   const [newWordList, setNewWordList] = useState('');
@@ -41,60 +43,26 @@ export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist,
     setNewWordList('')
   }
 
-  const wordlists = wordLists.map((list) => {
-    const editList = () => {
-      console.log(list.ID);
-    }
+  const navigateToList = (listId: string) => {
+    dispatch(setActiveListIdAction(listId));
+    navigate.push(`/dic/list/${listId}`);
+  }
 
-    const deleteListEv = (listId: string) => {
-      onDeleteList(listId);
-    }
-
-    const navigateToList = (listId: string) => {
-      dispatch(setActiveListIdAction(listId));
-      navigate.push(`/dic/list/${listId}`);
-    }
-
-    const addSenseToWordlistsEv = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lineId: string, listId: string) => {
-      e.stopPropagation();
-      e.preventDefault();
-      console.log('addSenseToWordlistsEv')
-      console.log(listId);
-      onAddSenseToWordlist(lineId, listId);
-    }
-
-    return (
-      <div key={list.ID} style={{position: 'relative', }}>
-        <IonItem button={true} onClick={() => {navigateToList(list.ID)}}>
-          <IonLabel>{list.title}</IonLabel>
-          <IonNote slot="end">6</IonNote>
-          {!!line && 
-            <div style={{
-                position: 'absolute',
-                top: '5px',
-                right: '63px',
-              }}>
-              <IonButton size="small" onClick={(e) => {
-                if (!line) return;
-                addSenseToWordlistsEv(e, line.ID, list.ID)
-              }}>add word</IonButton>
-            </div>
-          }
-        </IonItem>
-
-        <div style={{
-            position: 'absolute',
-            top: '6px',
-            right: '11px',
-          }}>
-          <WordListLocalMenu 
-            onDelete={() => {deleteListEv(list.ID)}} 
-            onEdit={editList}>
-          </WordListLocalMenu>
-        </div>
-      </div>
-    )
-  })
+  const updateListName = (name: string, listId: string) => {
+    onUpdateListName(name, listId);
+  }
+  
+  const wordlists = wordLists.map((list) =>
+    <WordListItem
+      key={list.ID}
+      list={list}
+      line={line}
+      onDeleteList={onDeleteList}
+      onAddSenseToWordlist={onAddSenseToWordlist}
+      navigateToList={navigateToList}
+      onUpdateListName={(newName) => {updateListName(newName, list.ID)}}
+    />
+  )
 
   return (
     <IonContent className="ion-padding">
