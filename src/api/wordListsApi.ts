@@ -21,6 +21,12 @@ export async function fetchWordListsByuserId(userId: string) {
   return wordsLists;
 }
 
+export async function putWordList(list: SenseListDto) {
+  const response = await axios.put<SenseListDto>(url, list)
+  const wordsLists = response.data;
+  return wordsLists;
+}
+
 export async function postWordList(title: string, userId: string) {
   const data: CreateSenseListDto = { title, userId };
   const response = await axios.post<SenseListDto>(url, data)
