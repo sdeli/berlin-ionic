@@ -1,32 +1,50 @@
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { selectLists } from '../redux/wordListsSlice';
+import { removeCircleOutline } from 'ionicons/icons';
+import { useAppDispatch } from '../redux/hooks';
+import { removeSenseFromWordlistAction } from '../redux/wordListsActions';
 
 const SenseListPage = () => {
+  const dispatch = useAppDispatch();
   const { id: activeListId } = useParams<{ id: string }>();
   const wordLists = useSelector(selectLists);
   const activeList = wordLists.find((list => list.ID === activeListId));
   if (!activeList) return (<></>);
+  
+  const removeSenseFromWordlist = (lineId: string, listId: string) => {
+    dispatch(removeSenseFromWordlistAction(lineId, listId));
+  }
 
   const lines = activeList.senseLines.map((line) => {
-      // const highlightedWord = `<strong>${line.source.text}</strong>`;
       const sourceText = line.source.text;
 
       return (
         <div key={line.ID} className="senses-table-row">		
-          <div  className="senses-table-data" style={{
+           <div className="senses-table-data" style={{paddingLeft: '10px'}} dangerouslySetInnerHTML={{__html: sourceText}}></div>
+          <div className="senses-table-data">
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between'
+            }}>
+              <span style={{width: '85%'}}> 
+                {line.target.text}
+              </span>
+              <span style={{
                 width: '15%',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center'
-          }} dangerouslySetInnerHTML={{__html: sourceText}}>
-          </div>
-
-          <div className="senses-table-data">
-              <span style={{width: '85%'}}> 
-                {line.target.text}
+              }}>
+                <IonIcon 
+                  onClick={() => {removeSenseFromWordlist(line.ID, activeList.ID)}} 
+                  style={{ fontSize: '24px', cursor: 'pointer' }}
+                  icon={removeCircleOutline} 
+                />
               </span>
+            </div>
           </div>
         </div>
       )

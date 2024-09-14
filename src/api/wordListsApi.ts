@@ -42,3 +42,11 @@ export async function addSenseToWordlists(lineId: string, listId: string) {
   const wordsLists = response.data;
   return wordsLists;
 }
+
+export async function removeSenseFromWordlist(lineId: string, listId: string) {
+  const addurl = url + '/remove-sense'
+  const data: AddSenseToWordlistsDto = { lineId, listId };
+  const response = await axios.post<SenseListDto>(addurl, data)
+  const wordsLists = response.data;
+  return wordsLists;
+}

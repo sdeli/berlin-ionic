@@ -1,6 +1,6 @@
 import { AnyAction, ThunkAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { addSenseToWordlists, deleteWordList, fetchAllWordLists, fetchWordListsByuserId, postWordList } from '../api/wordListsApi';
+import { addSenseToWordlists, deleteWordList, fetchAllWordLists, fetchWordListsByuserId, postWordList, removeSenseFromWordlist } from '../api/wordListsApi';
 import { selectLists, wordListsSlice } from './wordListsSlice';
 import { useSelector } from 'react-redux';
 import { SenseListDto } from '../dto';
@@ -54,6 +54,17 @@ export const deleteWordlistsAction = (wordListId: string): ThunkAction<void, Roo
 export const addSenseToWordlistsAction = (lineId: string, listId: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
   try {
     const list = await addSenseToWordlists(lineId, listId)
+    dispatch(wordListsSlice.actions.replaceOne(list))
+  } catch (error) {
+    console.log('error')
+    console.log(error)
+    console.log('busted')
+  }
+}
+
+export const removeSenseFromWordlistAction = (lineId: string, listId: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+  try {
+    const list = await removeSenseFromWordlist(lineId, listId)
     dispatch(wordListsSlice.actions.replaceOne(list))
   } catch (error) {
     console.log('error')
