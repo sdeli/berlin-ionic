@@ -87,6 +87,11 @@ export interface AddSenseToWordlistsDto {
   listId: string;
 }
 
+export interface AddWordToSearchHistoryDto {
+  wordId: string;
+  userId: string;
+}
+
 export interface FetchSenseListByUserIdDto {
   userId: string;
 }

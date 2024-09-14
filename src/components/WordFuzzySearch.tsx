@@ -7,9 +7,11 @@ import './WordFuzzySearch.module.scss'
 import Autocomplete, { AutocompleteChangeDetails, AutocompleteChangeReason, AutocompleteRenderInputParams } from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { fetchChosenWordAction, fetchWordsAction } from '../redux/wordActions';
+import { selectUser } from '../redux/authSlice';
 
 export default function WordFuzzySearch() {
   const chosenWord = useSelector(selectChosenWord);
+  const user = useSelector(selectUser);
 
   const defaultInputValue = chosenWord ? chosenWord.text : '';
   const [inputValue, setInputValue] = useState(defaultInputValue);
@@ -38,7 +40,8 @@ export default function WordFuzzySearch() {
     const chosenWord = words.find((word) => word.text === value?.label)
     if (chosenWord) {
       setInputValue(chosenWord.text);
-      dispatch(fetchChosenWordAction(chosenWord.text));
+      const userId = user ? user.id : null;
+      dispatch(fetchChosenWordAction(chosenWord.text, userId));
     }
   }
 

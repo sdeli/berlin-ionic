@@ -4,11 +4,21 @@ import { useParams } from 'react-router';
 import { selectLists } from '../redux/wordListsSlice';
 import { removeCircleOutline } from 'ionicons/icons';
 import { useAppDispatch } from '../redux/hooks';
-import { removeSenseFromWordlistAction } from '../redux/wordListsActions';
+import { fetchWordlistsByUserIdAction, removeSenseFromWordlistAction } from '../redux/wordListsActions';
+import { selectUser } from '../redux/authSlice';
+import { useEffect } from 'react';
 
 const SenseListPage = () => {
   const dispatch = useAppDispatch();
   const { id: activeListId } = useParams<{ id: string }>();
+  const user = useSelector(selectUser);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchWordlistsByUserIdAction(user.id));
+    }
+  }, [dispatch, user]);
+
   const wordLists = useSelector(selectLists);
   const activeList = wordLists.find((list => list.ID === activeListId));
   if (!activeList) return (<></>);
