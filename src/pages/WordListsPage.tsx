@@ -6,6 +6,8 @@ import { useAppDispatch } from '../redux/hooks';
 import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction, setActiveListIdAction, updateListAction } from '../redux/wordListsActions';
 import { WordLists } from '../components/WordLists';
 import { SenseListDto } from '../dto';
+import { MainLoader } from '../components/MainLoader';
+import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/react';
 
 export const WordListPage = () => {
   const dispatch = useAppDispatch();
@@ -36,7 +38,7 @@ export const WordListPage = () => {
   const updateListName = (newName: string, listId: string) => {
     const listToUpdate = wordLists.find((list) => list.ID === listId);
     if (!listToUpdate) return;
-    
+
     const tempList: SenseListDto = {
       ...listToUpdate,
       title: newName
@@ -45,13 +47,25 @@ export const WordListPage = () => {
   }
 
   return (
-    <WordLists 
-    wordLists={wordLists} 
-    line={null} 
-    onAddNewList={addList} 
-    onDeleteList={deleteList} 
-    onAddSenseToWordlist={addSenseToWordlist}
-    onUpdateListName={updateListName}
-  ></WordLists>
+    <>
+      <MainLoader></MainLoader>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>WordLists</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <MainLoader></MainLoader>
+
+        <WordLists
+          wordLists={wordLists}
+          line={null}
+          onAddNewList={addList}
+          onDeleteList={deleteList}
+          onAddSenseToWordlist={addSenseToWordlist}
+          onUpdateListName={updateListName}
+        ></WordLists>
+      </IonContent>
+    </>
   );
 }
