@@ -21,22 +21,22 @@ export default function WordFuzzySearch() {
   const words = useSelector(selectWords)
   const wordsItems = words.map((word) => {
     return {
-      label: word.text, 
+      label: word.text,
     }
   });
-  
+
   const handleInputChange: FormEventHandler<HTMLDivElement> = (event: ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     setInputValue(event.target.value);
     dispatch(fetchWordsAction(inputValue));
   };
 
-  const onChangeHandler =  (
+  const onChangeHandler = (
     event: React.SyntheticEvent<Element, Event>,
     value: { label: string; id: number } | null,
     reason: AutocompleteChangeReason,
     details?: AutocompleteChangeDetails<{ label: string; id: number }>
-  )  => {
+  ) => {
     const chosenWord = words.find((word) => word.text === value?.label)
     if (chosenWord) {
       setInputValue(chosenWord.text);
@@ -46,18 +46,18 @@ export default function WordFuzzySearch() {
   }
 
   return (
-  <div>
-    <Autocomplete
-      disablePortal
-      onChange={onChangeHandler}
-      onInput={handleInputChange}
-      //@ts-ignore
-      options={wordsItems}
-      //@ts-ignore
-      value={inputValue}
-      sx={{ width: 300 }}
-      renderInput={(params: AutocompleteRenderInputParams) => <TextField {...params} label="Search" />}
-    />
-  </div>
+    <div>
+      <Autocomplete
+        disablePortal
+        onChange={onChangeHandler}
+        onInput={handleInputChange}
+        //@ts-ignore
+        options={wordsItems}
+        //@ts-ignore
+        value={inputValue}
+        sx={{ width: 300 }}
+        renderInput={(params: AutocompleteRenderInputParams) => <TextField {...params} label="Search" />}
+      />
+    </div>
   )
 }

@@ -18,13 +18,16 @@ export const fetchWordsAction = (searchedWord?: string): ThunkAction<void, RootS
 export const fetchChosenWordAction = (searchedWord?: string, userId: string | null = null): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
   searchedWord = searchedWord || '';
   const filter = { text: searchedWord, limit: 1 }
+  dispatch(wordSlice.actions.setChosenWordIsLoading(true))
   try {
     const word = await fetchWord(filter);
     dispatch(wordSlice.actions.setChosenWord(word))
+    dispatch(wordSlice.actions.setChosenWordIsLoading(false))
     if (userId) {
       await addWordToSearchHistory(word.ID, userId)
     }
   } catch (error) {
+    dispatch(wordSlice.actions.setChosenWordIsLoading(false))
     console.log('error')
     console.log(error)
   }

@@ -4,14 +4,16 @@ import { WordDTO, WordMeta, WordSources } from '../dto';
 
 export interface WordState {
   words: WordDTO[],
-  chosenWord: WordDTO | null
+  chosenWord: WordDTO | null,
+  chosenWordIsLoading: boolean,
 }
 
 // Define the initial state using that type
 export const initialState: WordState = {
   words: [
   ],
-  chosenWord: null
+  chosenWord: null,
+  chosenWordIsLoading: false
 }
 
 export const wordSlice = createSlice({
@@ -27,6 +29,9 @@ export const wordSlice = createSlice({
     setChosenWord: (state: WordState, action: PayloadAction<WordDTO>) => {
       state.chosenWord = action.payload
     },
+    setChosenWordIsLoading: (state: WordState, action: PayloadAction<boolean>) => {
+      state.chosenWordIsLoading = action.payload
+    },
   },
 })
 
@@ -35,5 +40,6 @@ export const { replace } = wordSlice.actions
 // Other code such as selectors can use the imported `RootState` type
 export const selectWords = (state: RootState) => state.words.words
 export const selectChosenWord = (state: RootState) => state.words.chosenWord
+export const selectChosenWordIsLoading = (state: RootState) => state.words.chosenWordIsLoading
 
 export default wordSlice.reducer
