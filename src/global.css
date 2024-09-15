@@ -1,0 +1,8 @@
+.themed-header {
+  background: var(--ion-color-primary); /* Set background color to primary */
+  --color: var(--ion-color-primary-contrast); /* Set text color to white (contrast color) */
+}
+
+.themed-header ion-title {
+  color: white;
+}

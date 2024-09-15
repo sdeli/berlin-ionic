@@ -25,7 +25,13 @@ $color-form-highlight: #EEEEEE;
 	width:100%;
 	background:#000;
 	padding:($half-spacing-unit * 1.5) 0;
+  border-radius: 10px 10px 0 0;
 }
+
+.senses-table-content {
+  border-radius: 0px 0px 10px 10px;
+}
+
 
 .senses-table-row {
 	display:flex;

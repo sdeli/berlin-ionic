@@ -9,7 +9,7 @@ const HomePage: React.FC = () => {
   return (
     <>
       <MainLoader></MainLoader>
-      <IonHeader>
+      <IonHeader className="themed-header">
         <IonToolbar>
           <IonTitle>Dictionary</IonTitle>
         </IonToolbar>

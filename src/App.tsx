@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
+import './global.css';
 
 /* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';
@@ -19,6 +20,7 @@ import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
+import '@ionic/react/css/palettes/dark.class.css';
 
 /**
  * Ionic Dark Mode
@@ -56,8 +58,8 @@ setupIonicReact();
 const App: React.FC = () => (
   <React.StrictMode>
     <Provider store={store}>
-    <IonApp>
-      <IonReactRouter>
+      <IonApp>
+        <IonReactRouter>
           <Route exact path="/signup">
             <UnprotectedPageGuard element={<Signup />} />
           </Route>
@@ -65,7 +67,7 @@ const App: React.FC = () => (
           <Route exact path="/login">
             <UnprotectedPageGuard element={<Login />} />
           </Route>
-          
+
           {/* <Route exact path="/signup">
             <Signup />
           </Route> */}
@@ -77,53 +79,53 @@ const App: React.FC = () => (
           <Route path="/dic">
             <ProtectedPageGuard element={
               <IonTabs>
-              <IonRouterOutlet>
-                <Redirect exact path="/dic" to="/dic/home" />
-                <Route exact path="/dic/home">
-                  <HomePage />
-                </Route>
-                <Route exact path="/dic/list/:id">
-                  <SenseListPage />
-                </Route>
-                <Route exact path="/dic/list/">
-                  <WordListPage />
-                </Route>
-                <Route exact path="/dic/library">
-                  <LibraryPage />
-                </Route>
-                <Route exact path="/dic/search">
-                  <SearchPage />
-                </Route>
-              </IonRouterOutlet>
+                <IonRouterOutlet>
+                  <Redirect exact path="/dic" to="/dic/home" />
+                  <Route exact path="/dic/home">
+                    <HomePage />
+                  </Route>
+                  <Route exact path="/dic/list/:id">
+                    <SenseListPage />
+                  </Route>
+                  <Route exact path="/dic/list/">
+                    <WordListPage />
+                  </Route>
+                  <Route exact path="/dic/library">
+                    <LibraryPage />
+                  </Route>
+                  <Route exact path="/dic/search">
+                    <SearchPage />
+                  </Route>
+                </IonRouterOutlet>
 
-              <IonTabBar slot="bottom">
-                <IonTabButton tab="home" href="/dic/home">
-                  <IonIcon icon={playCircle} />
-                  <IonLabel>Listen now</IonLabel>
-                </IonTabButton>
+                <IonTabBar slot="bottom">
+                  <IonTabButton tab="home" href="/dic/home">
+                    <IonIcon icon={playCircle} />
+                    <IonLabel>Listen now</IonLabel>
+                  </IonTabButton>
 
-                <IonTabButton tab="radio" href="/dic/list">
-                  <IonIcon icon={radio} />
-                  <IonLabel>List</IonLabel>
-                </IonTabButton>
+                  <IonTabButton tab="radio" href="/dic/list">
+                    <IonIcon icon={radio} />
+                    <IonLabel>List</IonLabel>
+                  </IonTabButton>
 
-                <IonTabButton tab="library" href="/dic/library">
-                  <IonIcon icon={library} />
-                  <IonLabel>Library</IonLabel>
-                </IonTabButton>
+                  <IonTabButton tab="library" href="/dic/library">
+                    <IonIcon icon={library} />
+                    <IonLabel>Library</IonLabel>
+                  </IonTabButton>
 
-                <IonTabButton tab="search" href="/dic/search">
-                  <IonIcon icon={search} />
-                  <IonLabel>Search</IonLabel>
-                </IonTabButton>
-              </IonTabBar>
+                  <IonTabButton tab="search" href="/dic/search">
+                    <IonIcon icon={search} />
+                    <IonLabel>Search</IonLabel>
+                  </IonTabButton>
+                </IonTabBar>
               </IonTabs>
             } />
 
           </Route>
-      </IonReactRouter>
-    </IonApp>
-  </Provider>
+        </IonReactRouter>
+      </IonApp>
+    </Provider>
   </React.StrictMode>
 );
 

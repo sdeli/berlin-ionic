@@ -64,7 +64,7 @@ const SenseListPage = () => {
   return (
     <>
       <MainLoader></MainLoader>
-      <IonHeader>
+      <IonHeader className="themed-header">
         <IonToolbar>
           <IonTitle>List</IonTitle>
         </IonToolbar>

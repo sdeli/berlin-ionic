@@ -5,7 +5,7 @@ import { MainLoader } from '../components/MainLoader';
 const SearchPage = () => (
   <>
     <MainLoader></MainLoader>
-    <IonHeader>
+    <IonHeader className="themed-header">
       <IonToolbar>
         <IonTitle>Search</IonTitle>
       </IonToolbar>

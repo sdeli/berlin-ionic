@@ -49,7 +49,7 @@ export const WordListPage = () => {
   return (
     <>
       <MainLoader></MainLoader>
-      <IonHeader>
+      <IonHeader className="themed-header">
         <IonToolbar>
           <IonTitle>WordLists</IonTitle>
         </IonToolbar>

@@ -1,28 +1,133 @@
-import React from 'react';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/react';
 import { MainLoader } from '../components/MainLoader';
+import type { ToggleCustomEvent } from '@ionic/react';
+import { personCircle, personCircleOutline, sunny, sunnyOutline } from 'ionicons/icons';
+import React, { useEffect, useState } from 'react';
+import {
+  IonBackButton,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonRange,
+  IonText,
+  IonTitle,
+  IonToggle,
+  IonToolbar,
+} from '@ionic/react';
+const LibraryPage = () => {
+  const [paletteToggle, setPaletteToggle] = useState(false);
 
-const LibraryPage = () => (
-  <>
-    <MainLoader></MainLoader>
-    <IonHeader>
-      <IonToolbar>
-        <IonTitle>Library</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-    <IonContent>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-        }}
-      >
-        Library content
-      </div>
-    </IonContent>
-  </>
-);
+  // Listen for the toggle check/uncheck to toggle the dark palette
+  const toggleChange = (ev: ToggleCustomEvent) => {
+    toggleDarkPalette(ev.detail.checked);
+  };
+
+  // Add or remove the "ion-palette-dark" class on the html element
+  const toggleDarkPalette = (shouldAdd: boolean) => {
+    console.log('shouldAdd')
+    console.log(shouldAdd);
+    console.log('documentElement')
+    console.log(document.documentElement);
+    document.documentElement.classList.toggle('ion-palette-dark', shouldAdd);
+  };
+
+  // Check/uncheck the toggle and update the palette based on isDark
+  const initializeDarkPalette = (isDark: boolean) => {
+    setPaletteToggle(isDark);
+    toggleDarkPalette(isDark);
+  };
+
+  useEffect(() => {
+    // Use matchMedia to check the user preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    // Initialize the dark palette based on the initial
+    // value of the prefers-color-scheme media query
+    initializeDarkPalette(prefersDark.matches);
+
+    const setDarkPaletteFromMediaQuery = (mediaQuery: MediaQueryListEvent) => {
+      initializeDarkPalette(mediaQuery.matches);
+    };
+
+    // Listen for changes to the prefers-color-scheme media query
+    prefersDark.addEventListener('change', setDarkPaletteFromMediaQuery);
+
+    return () => {
+      prefersDark.removeEventListener('change', setDarkPaletteFromMediaQuery);
+    };
+  }, []);
+
+  return (
+    <>
+      <IonHeader class="ion-no-border">
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton default-href="#"></IonBackButton>
+          </IonButtons>
+          <IonTitle>Display</IonTitle>
+          <IonButtons slot="end">
+            <IonButton color="dark">
+              <IonIcon slot="icon-only" ios={personCircleOutline} md={personCircle}></IonIcon>
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent>
+        <div style={{
+          maxWidth: '1000px',
+          margin: 'auto'
+        }}>
+          <IonListHeader>Appearance</IonListHeader>
+          <IonList inset={true}>
+            <IonItem>
+              <IonToggle checked={paletteToggle} onIonChange={toggleChange} justify="space-between">
+                Dark Mode
+              </IonToggle>
+            </IonItem>
+          </IonList>
+
+          <IonList inset={true}>
+            <IonItem button={true}>Text Size</IonItem>
+            <IonItem>
+              <IonToggle justify="space-between">Bold Text</IonToggle>
+            </IonItem>
+          </IonList>
+
+          <IonListHeader>Brightness</IonListHeader>
+          <IonList inset={true}>
+            <IonItem>
+              <IonRange value={40}>
+                <IonIcon icon={sunnyOutline} slot="start"></IonIcon>
+                <IonIcon icon={sunny} slot="end"></IonIcon>
+              </IonRange>
+            </IonItem>
+            <IonItem>
+              <IonToggle justify="space-between" checked>
+                True Tone
+              </IonToggle>
+            </IonItem>
+          </IonList>
+
+          <IonList inset={true}>
+            <IonItem button={true}>
+              <IonLabel>Night Shift</IonLabel>
+              <IonText slot="end" color="medium">
+                9:00 PM to 8:00 AM
+              </IonText>
+            </IonItem>
+          </IonList>
+        </div>
+
+      </IonContent>
+    </>
+  );
+};
 
 export default LibraryPage;
+
