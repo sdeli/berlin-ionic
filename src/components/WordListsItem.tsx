@@ -20,13 +20,13 @@ interface WordListItemProps {
   navigateToList: (listId: string) => void;
 }
 
-const WordListItem: React.FC<WordListItemProps> = ({ 
-  list, 
-  line, 
-  onDeleteList, 
-  onAddSenseToWordlist, 
-  navigateToList, 
-  onUpdateListName 
+const WordListItem: React.FC<WordListItemProps> = ({
+  list,
+  line,
+  onDeleteList,
+  onAddSenseToWordlist,
+  navigateToList,
+  onUpdateListName
 }) => {
   const [isEdited, setIsEdited] = useState(false);
   const [inputValue, setInputValue] = useState<string>(list.title);
@@ -41,14 +41,14 @@ const WordListItem: React.FC<WordListItemProps> = ({
     const iconElement = document.getElementById('save-list-name-icon');
 
     if (
-      inputRef.current && 
+      inputRef.current &&
       !inputRef.current.contains(iconElement as Node)
     ) {
       return;
     }
 
     if (
-      inputRef.current && 
+      inputRef.current &&
       !inputRef.current.contains(event.target as Node)
     ) {
       resetInput();
@@ -98,7 +98,7 @@ const WordListItem: React.FC<WordListItemProps> = ({
           <IonItem button={true} onClick={() => navigateToList(list.ID)}>
             <IonLabel>{list.title}</IonLabel>
             <IonNote slot="end">6</IonNote>
-    
+
             {!!line && (
               <div style={{
                 position: 'absolute',
@@ -113,11 +113,11 @@ const WordListItem: React.FC<WordListItemProps> = ({
           </IonItem>
           <div style={{
             position: 'absolute',
-            top: '6px',
-            right: '11px',
+            top: '4px',
+            right: '37px',
           }}>
-            <WordListLocalMenu 
-              onDelete={deleteListEv} 
+            <WordListLocalMenu
+              onDelete={deleteListEv}
               onEdit={editList}
             />
           </div>
@@ -145,7 +145,7 @@ const WordListItem: React.FC<WordListItemProps> = ({
               id='save-list-name-icon'
               onClick={updateListName}
               style={{ fontSize: '24px', cursor: 'pointer' }}
-              icon={saveOutline} 
+              icon={saveOutline}
             />
           </div>
         </>

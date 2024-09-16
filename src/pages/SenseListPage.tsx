@@ -1,8 +1,8 @@
-import { IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { selectLists } from '../redux/wordListsSlice';
-import { removeCircleOutline } from 'ionicons/icons';
+import { personCircle, personCircleOutline, removeCircleOutline } from 'ionicons/icons';
 import { useAppDispatch } from '../redux/hooks';
 import { fetchWordlistsByUserIdAction, removeSenseFromWordlistAction } from '../redux/wordListsActions';
 import { selectUser } from '../redux/authSlice';
@@ -64,9 +64,17 @@ const SenseListPage = () => {
   return (
     <>
       <MainLoader></MainLoader>
-      <IonHeader className="themed-header">
+      <IonHeader class="ion-no-border">
         <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton default-href="#"></IonBackButton>
+          </IonButtons>
           <IonTitle>List</IonTitle>
+          <IonButtons slot="end">
+            <IonButton color="dark">
+              <IonIcon slot="icon-only" ios={personCircleOutline} md={personCircle}></IonIcon>
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent>

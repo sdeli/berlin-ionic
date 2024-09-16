@@ -28,7 +28,6 @@ export const postWordlistsAction = (wordListTitle: string, userid: string, wordL
 }
 
 export const fetchWordlistsByUserIdAction = (userId: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
-  console.log('fetchWordlistsByUserIdAction')
   try {
     const wordsLists = await fetchWordListsByuserId(userId)
     dispatch(wordListsSlice.actions.replace(wordsLists))

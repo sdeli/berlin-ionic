@@ -47,7 +47,7 @@ import { ProtectedPageGuard, UnprotectedPageGuard } from './route-guards';
 import SenseListPage from './pages/SenseListPage';
 import { WordListPage } from './pages/WordListsPage';
 
-setupIonicReact();
+setupIonicReact({ mode: 'ios' });
 // ReactDOM.createRoot(document.getElementById('root')!).render(
 //   <React.StrictMode>
 //     <Provider store={store}>

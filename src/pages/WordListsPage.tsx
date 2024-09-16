@@ -7,7 +7,8 @@ import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserI
 import { WordLists } from '../components/WordLists';
 import { SenseListDto } from '../dto';
 import { MainLoader } from '../components/MainLoader';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/react';
+import { personCircle, personCircleOutline } from 'ionicons/icons';
 
 export const WordListPage = () => {
   const dispatch = useAppDispatch();
@@ -49,14 +50,22 @@ export const WordListPage = () => {
   return (
     <>
       <MainLoader></MainLoader>
-      <IonHeader className="themed-header">
+
+      <IonHeader class="ion-no-border">
         <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton default-href="#"></IonBackButton>
+          </IonButtons>
           <IonTitle>WordLists</IonTitle>
+          <IonButtons slot="end">
+            <IonButton color="dark">
+              <IonIcon slot="icon-only" ios={personCircleOutline} md={personCircle}></IonIcon>
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <MainLoader></MainLoader>
 
+      <IonContent>
         <WordLists
           wordLists={wordLists}
           line={null}
