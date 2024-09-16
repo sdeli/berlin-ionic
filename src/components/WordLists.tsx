@@ -51,7 +51,7 @@ export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist,
   const updateListName = (name: string, listId: string) => {
     onUpdateListName(name, listId);
   }
-
+  
   const wordlists = wordLists.map((list) =>
     <WordListItem
       key={list.ID}
@@ -60,13 +60,13 @@ export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist,
       onDeleteList={onDeleteList}
       onAddSenseToWordlist={onAddSenseToWordlist}
       navigateToList={navigateToList}
-      onUpdateListName={(newName) => { updateListName(newName, list.ID) }}
+      onUpdateListName={(newName) => {updateListName(newName, list.ID)}}
     />
   )
 
   return (
     <IonContent className="ion-padding">
-      <div title="add-new-list-area" style={{ padding: "0 17px" }}>
+      <div title="add-new-list-area" style={{ padding: "0 17px"}}>
         <IonItem>
           <IonInput
             label="Add new list"
@@ -82,7 +82,7 @@ export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist,
         </IonItem>
       </div>
 
-      <IonList style={{ height: '100%' }} inset={true}>
+      <IonList style={{height: '100%'}} inset={true}>
         {wordlists}
       </IonList>
     </IonContent>

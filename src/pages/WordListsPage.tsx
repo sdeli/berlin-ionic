@@ -64,8 +64,11 @@ export const WordListPage = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-
-      <IonContent>
+      <div style={{
+        height: '2000px',
+        maxWidth: '1000px',
+        margin: 'auto'
+      }}>
         <WordLists
           wordLists={wordLists}
           line={null}
@@ -74,7 +77,8 @@ export const WordListPage = () => {
           onAddSenseToWordlist={addSenseToWordlist}
           onUpdateListName={updateListName}
         ></WordLists>
-      </IonContent>
+
+      </div>
     </>
   );
 }
