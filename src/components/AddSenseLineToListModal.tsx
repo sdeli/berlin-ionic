@@ -98,8 +98,9 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
           onDeleteList={deleteList}
           onAddSenseToWordlist={addSenseToWordlist}
           onUpdateListName={updateListName}
+          displayAddWordBtn={true}
         ></WordLists>
       </IonModal>
-    </div>
+    </div >
   )
 }

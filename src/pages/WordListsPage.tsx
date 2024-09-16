@@ -32,10 +32,6 @@ export const WordListPage = () => {
     dispatch(deleteWordlistsAction(listId));
   }
 
-  const addSenseToWordlist = (dto: AddSenseToWordlistsDto) => {
-    dispatch(addSenseToWordlistsAction(dto));
-  }
-
   const updateListName = (newName: string, listId: string) => {
     const listToUpdate = wordLists.find((list) => list.ID === listId);
     if (!listToUpdate) return;
@@ -71,10 +67,9 @@ export const WordListPage = () => {
       }}>
         <WordLists
           wordLists={wordLists}
-          line={null}
           onAddNewList={addList}
           onDeleteList={deleteList}
-          onAddSenseToWordlist={addSenseToWordlist}
+          onAddSenseToWordlist={() => { }}
           onUpdateListName={updateListName}
         ></WordLists>
 

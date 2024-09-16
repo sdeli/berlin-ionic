@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 import {
   IonItem,
   IonLabel,
@@ -8,11 +8,12 @@ import {
   IonIcon,
 } from '@ionic/react';
 import WordListLocalMenu from './WordListLocalMenu';
-import { AddSenseToWordlistsDto, SenseLineDTO, SenseListDto } from '../dto';
+import { SenseListDto } from '../dto';
 import { saveOutline } from 'ionicons/icons';
 
 interface WordListItemProps {
   list: SenseListDto;
+  displayAddWordBtn: boolean;
   onDeleteList: (listId: string) => void;
   onAddSenseToWordlist: (listId: string) => void;
   onUpdateListName: (newName: string) => void;
@@ -21,6 +22,7 @@ interface WordListItemProps {
 
 const WordListItem: React.FC<WordListItemProps> = ({
   list,
+  displayAddWordBtn = false,
   onDeleteList,
   onAddSenseToWordlist,
   navigateToList,
@@ -35,31 +37,30 @@ const WordListItem: React.FC<WordListItemProps> = ({
     setIsEdited(false);
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
+  const handleClickOutsideWhenEditing = (event: MouseEvent) => {
     const iconElement = document.getElementById('save-list-name-icon');
+    if (!iconElement) return;
 
-    if (
-      inputRef.current &&
-      !inputRef.current.contains(iconElement as Node)
-    ) {
+    const clickedSaveIcon = event.target === iconElement;
+    if (clickedSaveIcon) {
       return;
     }
 
-    if (
-      inputRef.current &&
-      !inputRef.current.contains(event.target as Node)
-    ) {
+    const clickedInput = inputRef.current && inputRef.current.contains(event.target as Node);
+    const clickedOut = !clickedInput && !clickedSaveIcon;
+    if (clickedOut) {
       resetInput();
+      return;
     }
   };
 
   useEffect(() => {
     if (isEdited) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutsideWhenEditing);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutsideWhenEditing);
     };
   }, [isEdited]);
 
@@ -86,40 +87,45 @@ const WordListItem: React.FC<WordListItemProps> = ({
     onUpdateListName(inputValue);
     setIsEdited(false);
   };
+  const localMenuStyles = {
+    marginLeft: '-6px',
+    marginRight: '-2px'
+  }
 
   return (
     <div key={list.ID} style={{ position: 'relative' }}>
       {!isEdited ? (
-        <>
+        <div>
           <IonItem button={true} onClick={() => navigateToList(list.ID)}>
             <IonLabel>{list.title}</IonLabel>
-            <IonNote slot="end">6</IonNote>
+          </IonItem>
 
-            <div style={{
-              position: 'absolute',
-              top: '5px',
-              right: '63px',
-            }}>
+          <div title="word-list-item-local-menu" style={{
+            display: 'flex',
+            position: 'absolute',
+            top: '5px',
+            right: '35px',
+          }}>
+            {displayAddWordBtn && (
               <IonButton size="small" onClick={addSenseToWordlistsEv}>
                 add word
               </IonButton>
+            )}
+            <div style={{
+              ...(displayAddWordBtn && localMenuStyles)
+            }}>
+              <WordListLocalMenu
+                onDelete={deleteListEv}
+                onEdit={editList}
+              />
             </div>
-          </IonItem>
-          <div style={{
-            position: 'absolute',
-            top: '4px',
-            right: '37px',
-          }}>
-            <WordListLocalMenu
-              onDelete={deleteListEv}
-              onEdit={editList}
-            />
           </div>
-        </>
+        </div>
       ) : (
         <>
           <IonItem>
             <IonInput
+              id="edit-word-list-name-input"
               ref={inputRef}
               style={{ width: 'unset' }}
               fill="outline"
@@ -131,8 +137,8 @@ const WordListItem: React.FC<WordListItemProps> = ({
 
           <div title='on-edit-save-icon' style={{
             position: 'absolute',
-            top: '16px',
-            right: '31px',
+            top: '12px',
+            right: '56px',
             zIndex: 1000
           }}>
             <IonIcon
@@ -143,8 +149,9 @@ const WordListItem: React.FC<WordListItemProps> = ({
             />
           </div>
         </>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 

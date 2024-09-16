@@ -15,11 +15,10 @@ export interface props {
   onDelete: () => void,
 }
 
-export default function MenuListComposition({onEdit, onDelete}: props) {
-  const [open, setOpen] = React.useState(false);
+export default function MenuListComposition({ onEdit, onDelete }: props) {
+  const [isOpen, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
-
-  const handleToggle = () => {
+  const handleToggle = (e: any) => {
     setOpen((prevOpen) => !prevOpen);
   };
 
@@ -44,41 +43,42 @@ export default function MenuListComposition({onEdit, onDelete}: props) {
   }
 
   // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
+  const prevOpen = React.useRef(isOpen);
   React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
+    if (prevOpen.current === true && isOpen === false) {
       anchorRef.current!.focus();
     }
 
-    prevOpen.current = open;
-  }, [open]);
+    prevOpen.current = isOpen;
+  }, [isOpen]);
 
   return (
     <Stack direction="row" spacing={2}>
       <div style={{
-        zIndex: open ? 900 : 600
+        zIndex: isOpen ? 900 : 600
       }}>
         <Button
           ref={anchorRef}
           id="composition-button"
-          aria-controls={open ? 'composition-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
+          aria-controls={isOpen ? 'composition-menu' : undefined}
+          aria-expanded={isOpen ? 'true' : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
         >
           <IonIcon
             style={{ fontSize: '24px', cursor: 'pointer' }}
-            icon={ellipsisVerticalCircle} 
-                />
+            icon={ellipsisVerticalCircle}
+          />
         </Button>
         <Popper
-          open={open}
+          title='sannya'
+          open={isOpen}
           anchorEl={anchorRef.current}
           role={undefined}
           placement="bottom-start"
           transition
           disablePortal
-          style={{zIndex: 1000}}
+          style={{ zIndex: 1000 }}
         >
           {({ TransitionProps, placement }) => (
             <Grow
@@ -91,7 +91,7 @@ export default function MenuListComposition({onEdit, onDelete}: props) {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
-                    autoFocusItem={open}
+                    autoFocusItem={isOpen}
                     id="composition-menu"
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
@@ -100,7 +100,7 @@ export default function MenuListComposition({onEdit, onDelete}: props) {
                       handleClose(event);
                       onEdit();
                     }}>Edit</MenuItem>
-                    
+
                     <MenuItem onClick={(event) => {
                       handleClose(event);
                       onDelete();
