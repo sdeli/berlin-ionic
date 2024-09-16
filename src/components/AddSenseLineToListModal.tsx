@@ -15,12 +15,12 @@ import {
   IonNote,
 } from '@ionic/react';
 import { useEffect } from 'react';
-import { SenseLineDTO } from '../dto';
+import { AddSenseToWordlistsDto, SenseLineDTO, SenseListDto } from '../dto';
 import { useSelector } from 'react-redux';
 import { selectLists } from '../redux/wordListsSlice';
 import { selectUser } from '../redux/authSlice';
 import { useAppDispatch } from '../redux/hooks';
-import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction, setActiveListIdAction } from '../redux/wordListsActions';
+import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction, setActiveListIdAction, updateListAction } from '../redux/wordListsActions';
 import { WordLists } from './WordLists';
 
 interface AddSenseLineToListModalProps {
@@ -47,12 +47,22 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
   }
 
   const deleteList = (listId: string) => {
-    console.log(11);
     dispatch(deleteWordlistsAction(listId));
   }
 
-  const addSenseToWordlist = (lineId: string, listId: string) => {
-    dispatch(addSenseToWordlistsAction(lineId, listId));
+  const addSenseToWordlist = (dto: AddSenseToWordlistsDto) => {
+    dispatch(addSenseToWordlistsAction(dto));
+  }
+
+  const updateListName = (newName: string, listId: string) => {
+    const listToUpdate = wordLists.find((list) => list.ID === listId);
+    if (!listToUpdate) return;
+
+    const tempList: SenseListDto = {
+      ...listToUpdate,
+      title: newName
+    }
+    dispatch(updateListAction(tempList));
   }
 
   return (
@@ -73,18 +83,19 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
             </IonButtons>
           </IonToolbar>
         </IonHeader>
-          <div style={{paddingLeft: '50px', marginBottom: '-10px'}}>
-            <p>german: {line?.source.text}</p>
-            <p>english: {line?.target.text}</p>
-          </div>  
+        <div style={{ paddingLeft: '50px', marginBottom: '-10px' }}>
+          <p>german: {line?.source.text}</p>
+          <p>english: {line?.target.text}</p>
+        </div>
 
-          <WordLists 
-            wordLists={wordLists} 
-            line={line} 
-            onAddNewList={addList} 
-            onDeleteList={deleteList} 
-            onAddSenseToWordlist={addSenseToWordlist}
-          ></WordLists>
+        <WordLists
+          wordLists={wordLists}
+          line={line}
+          onAddNewList={addList}
+          onDeleteList={deleteList}
+          onAddSenseToWordlist={addSenseToWordlist}
+          onUpdateListName={updateListName}
+        ></WordLists>
       </IonModal>
     </div>
   )

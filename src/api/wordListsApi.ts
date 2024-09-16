@@ -39,10 +39,9 @@ export async function deleteWordList(listId: string) {
   return await httpClient.delete<void>(deleteUrl)
 }
 
-export async function addSenseToWordlists(lineId: string, listId: string) {
+export async function addSenseToWordlists(dto: AddSenseToWordlistsDto) {
   const addurl = url + '/add-sense'
-  const data: AddSenseToWordlistsDto = { lineId, listId };
-  const response = await httpClient.post<SenseListDto>(addurl, data)
+  const response = await httpClient.post<SenseListDto>(addurl, dto)
   const wordsLists = response.data;
   return wordsLists;
 }

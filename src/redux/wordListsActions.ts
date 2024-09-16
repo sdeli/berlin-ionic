@@ -3,7 +3,7 @@ import { RootState } from './store';
 import { addSenseToWordlists, deleteWordList, fetchAllWordLists, fetchWordListsByuserId, postWordList, putWordList, removeSenseFromWordlist } from '../api/wordListsApi';
 import { selectLists, wordListsSlice } from './wordListsSlice';
 import { useSelector } from 'react-redux';
-import { SenseListDto } from '../dto';
+import { AddSenseToWordlistsDto, SenseListDto } from '../dto';
 
 export const fetchWordlistsAction = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
   try {
@@ -50,9 +50,9 @@ export const deleteWordlistsAction = (wordListId: string): ThunkAction<void, Roo
   }
 }
 
-export const addSenseToWordlistsAction = (lineId: string, listId: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+export const addSenseToWordlistsAction = (dto: AddSenseToWordlistsDto): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
   try {
-    const list = await addSenseToWordlists(lineId, listId)
+    const list = await addSenseToWordlists(dto)
     dispatch(wordListsSlice.actions.replaceOne(list))
   } catch (error) {
     console.log('error')

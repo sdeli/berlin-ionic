@@ -5,7 +5,7 @@ import { selectUser } from '../redux/authSlice';
 import { useAppDispatch } from '../redux/hooks';
 import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction, setActiveListIdAction, updateListAction } from '../redux/wordListsActions';
 import { WordLists } from '../components/WordLists';
-import { SenseListDto } from '../dto';
+import { AddSenseToWordlistsDto, SenseListDto } from '../dto';
 import { MainLoader } from '../components/MainLoader';
 import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/react';
 import { personCircle, personCircleOutline } from 'ionicons/icons';
@@ -32,8 +32,8 @@ export const WordListPage = () => {
     dispatch(deleteWordlistsAction(listId));
   }
 
-  const addSenseToWordlist = (lineId: string, listId: string) => {
-    dispatch(addSenseToWordlistsAction(lineId, listId));
+  const addSenseToWordlist = (dto: AddSenseToWordlistsDto) => {
+    dispatch(addSenseToWordlistsAction(dto));
   }
 
   const updateListName = (newName: string, listId: string) => {

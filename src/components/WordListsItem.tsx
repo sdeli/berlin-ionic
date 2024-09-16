@@ -8,14 +8,14 @@ import {
   IonIcon,
 } from '@ionic/react';
 import WordListLocalMenu from './WordListLocalMenu';
-import { SenseLineDTO, SenseListDto } from '../dto';
+import { AddSenseToWordlistsDto, SenseLineDTO, SenseListDto } from '../dto';
 import { saveOutline } from 'ionicons/icons';
 
 interface WordListItemProps {
   list: SenseListDto;
   line: SenseLineDTO | null;
   onDeleteList: (listId: string) => void;
-  onAddSenseToWordlist: (listId: string, lineId: string) => void;
+  onAddSenseToWordlist: (dto: AddSenseToWordlistsDto) => void;
   onUpdateListName: (newName: string) => void;
   navigateToList: (listId: string) => void;
 }
@@ -77,7 +77,12 @@ const WordListItem: React.FC<WordListItemProps> = ({
     e.stopPropagation();
     e.preventDefault();
     if (line) {
-      onAddSenseToWordlist(list.ID, line.ID);
+      const dto: AddSenseToWordlistsDto = {
+        lineId: line.ID,
+        listId: list.ID
+      }
+
+      onAddSenseToWordlist(dto);
     }
   };
 
