@@ -23,6 +23,8 @@
 ## WordsList Page
 
 ## Words of Wordlist Page
+  - can see words of wordlist
+  - can delete word
 
 ## Settings Page
  - Toggle Dark mode

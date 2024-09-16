@@ -27,13 +27,12 @@ import WordListItem from './WordListsItem';
 
 interface WordListsProps {
   wordLists: SenseListDto[]
-  line: SenseLineDTO | null
   onAddNewList: (newWordListName: string) => void,
   onDeleteList: (listId: string) => void,
-  onAddSenseToWordlist: (dto: AddSenseToWordlistsDto) => void,
+  onAddSenseToWordlist: (listId: string) => void,
   onUpdateListName: (newName: string, id: string) => void;
 }
-export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist, onDeleteList, onUpdateListName }: WordListsProps) => {
+export const WordLists = ({ wordLists, onAddNewList, onAddSenseToWordlist, onDeleteList, onUpdateListName }: WordListsProps) => {
   const dispatch = useAppDispatch();
   const navigate = useHistory();
   const [newWordList, setNewWordList] = useState('');
@@ -56,7 +55,6 @@ export const WordLists = ({ wordLists, onAddNewList, line, onAddSenseToWordlist,
     <WordListItem
       key={list.ID}
       list={list}
-      line={line}
       onDeleteList={onDeleteList}
       onAddSenseToWordlist={onAddSenseToWordlist}
       navigateToList={navigateToList}

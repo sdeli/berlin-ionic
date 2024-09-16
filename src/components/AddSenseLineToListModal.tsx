@@ -26,7 +26,7 @@ import { WordLists } from './WordLists';
 interface AddSenseLineToListModalProps {
   isOpen: boolean;
   onClose: () => void;
-  line: SenseLineDTO | null;
+  line: SenseLineDTO;
 }
 export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineToListModalProps) => {
   const dispatch = useAppDispatch();
@@ -50,7 +50,11 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
     dispatch(deleteWordlistsAction(listId));
   }
 
-  const addSenseToWordlist = (dto: AddSenseToWordlistsDto) => {
+  const addSenseToWordlist = (listId: string) => {
+    const dto: AddSenseToWordlistsDto = {
+      listId,
+      lineId: line.ID
+    }
     dispatch(addSenseToWordlistsAction(dto));
   }
 
@@ -84,13 +88,12 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
           </IonToolbar>
         </IonHeader>
         <div style={{ paddingLeft: '50px', marginBottom: '-10px' }}>
-          <p>german: {line?.source.text}</p>
-          <p>english: {line?.target.text}</p>
+          <p>german: {line.source.text}</p>
+          <p>english: {line.target.text}</p>
         </div>
 
         <WordLists
           wordLists={wordLists}
-          line={line}
           onAddNewList={addList}
           onDeleteList={deleteList}
           onAddSenseToWordlist={addSenseToWordlist}

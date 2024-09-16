@@ -13,16 +13,14 @@ import { saveOutline } from 'ionicons/icons';
 
 interface WordListItemProps {
   list: SenseListDto;
-  line: SenseLineDTO | null;
   onDeleteList: (listId: string) => void;
-  onAddSenseToWordlist: (dto: AddSenseToWordlistsDto) => void;
+  onAddSenseToWordlist: (listId: string) => void;
   onUpdateListName: (newName: string) => void;
   navigateToList: (listId: string) => void;
 }
 
 const WordListItem: React.FC<WordListItemProps> = ({
   list,
-  line,
   onDeleteList,
   onAddSenseToWordlist,
   navigateToList,
@@ -76,14 +74,7 @@ const WordListItem: React.FC<WordListItemProps> = ({
   const addSenseToWordlistsEv = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>) => {
     e.stopPropagation();
     e.preventDefault();
-    if (line) {
-      const dto: AddSenseToWordlistsDto = {
-        lineId: line.ID,
-        listId: list.ID
-      }
-
-      onAddSenseToWordlist(dto);
-    }
+    onAddSenseToWordlist(list.ID);
   };
 
   const handleInputChange = (e: CustomEvent) => {
@@ -104,17 +95,15 @@ const WordListItem: React.FC<WordListItemProps> = ({
             <IonLabel>{list.title}</IonLabel>
             <IonNote slot="end">6</IonNote>
 
-            {!!line && (
-              <div style={{
-                position: 'absolute',
-                top: '5px',
-                right: '63px',
-              }}>
-                <IonButton size="small" onClick={addSenseToWordlistsEv}>
-                  add word
-                </IonButton>
-              </div>
-            )}
+            <div style={{
+              position: 'absolute',
+              top: '5px',
+              right: '63px',
+            }}>
+              <IonButton size="small" onClick={addSenseToWordlistsEv}>
+                add word
+              </IonButton>
+            </div>
           </IonItem>
           <div style={{
             position: 'absolute',

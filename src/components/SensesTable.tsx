@@ -99,7 +99,9 @@ export const SensesTable = () => {
         }
       </div>
       <div>
-        <AddSenseLineToListModal isOpen={isModalOpen} onClose={closeModal} line={lineIdToAdd} />
+        {lineIdToAdd ? (
+          <AddSenseLineToListModal isOpen={isModalOpen} onClose={closeModal} line={lineIdToAdd} />
+        ) : (<></>)}
       </div>
     </div>
   )
