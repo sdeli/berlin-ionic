@@ -32,7 +32,7 @@ export const WordListPage = () => {
     dispatch(deleteWordlistsAction(listId));
   }
 
-  const updateListName = (newName: string, listId: string) => {
+  const updateListName = async (newName: string, listId: string) => {
     const listToUpdate = wordLists.find((list) => list.ID === listId);
     if (!listToUpdate) return;
 
@@ -40,7 +40,7 @@ export const WordListPage = () => {
       ...listToUpdate,
       title: newName
     }
-    dispatch(updateListAction(tempList));
+    return dispatch(updateListAction(tempList));
   }
 
   return (

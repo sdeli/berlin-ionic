@@ -31,7 +31,7 @@ interface WordListsProps {
   onAddNewList: (newWordListName: string) => void,
   onDeleteList: (listId: string) => void,
   onAddSenseToWordlist: (listId: string) => void,
-  onUpdateListName: (newName: string, id: string) => void;
+  onUpdateListName: (newName: string, id: string) => Promise<void>;
 }
 export const WordLists = ({ wordLists, displayAddWordBtn = false,
   onAddNewList, onAddSenseToWordlist, onDeleteList, onUpdateListName }: WordListsProps) => {
@@ -50,7 +50,7 @@ export const WordLists = ({ wordLists, displayAddWordBtn = false,
   }
 
   const updateListName = (name: string, listId: string) => {
-    onUpdateListName(name, listId);
+    return onUpdateListName(name, listId);
   }
 
   const wordlists = wordLists.map((list) =>
@@ -60,7 +60,7 @@ export const WordLists = ({ wordLists, displayAddWordBtn = false,
       onDeleteList={onDeleteList}
       onAddSenseToWordlist={onAddSenseToWordlist}
       navigateToList={navigateToList}
-      onUpdateListName={(newName) => { updateListName(newName, list.ID) }}
+      onUpdateListName={async (newName) => updateListName(newName, list.ID)}
       displayAddWordBtn={displayAddWordBtn}
     />
   )

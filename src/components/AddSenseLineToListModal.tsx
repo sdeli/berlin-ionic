@@ -66,7 +66,7 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
       ...listToUpdate,
       title: newName
     }
-    dispatch(updateListAction(tempList));
+    return dispatch(updateListAction(tempList));
   }
 
   return (

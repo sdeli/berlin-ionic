@@ -16,7 +16,7 @@ interface WordListItemProps {
   displayAddWordBtn: boolean;
   onDeleteList: (listId: string) => void;
   onAddSenseToWordlist: (listId: string) => void;
-  onUpdateListName: (newName: string) => void;
+  onUpdateListName: (newName: string) => Promise<void>;
   navigateToList: (listId: string) => void;
 }
 
@@ -83,8 +83,8 @@ const WordListItem: React.FC<WordListItemProps> = ({
     setInputValue(newValue);
   };
 
-  const updateListName = () => {
-    onUpdateListName(inputValue);
+  const updateListName = async () => {
+    await onUpdateListName(inputValue);
     setIsEdited(false);
   };
   const localMenuStyles = {
