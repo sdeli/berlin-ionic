@@ -16,14 +16,16 @@ export const fetchWordlistsAction = (): ThunkAction<void, RootState, unknown, An
   }
 }
 
-export const postWordlistsAction = (wordListTitle: string, userid: string, wordLists: SenseListDto[]): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+export const postWordlistsAction = (wordListTitle: string, userid: string, wordLists: SenseListDto[]): ThunkAction<Promise<boolean>, RootState, unknown, AnyAction> => async (dispatch) => {
   try {
     const newWordsList = await postWordList(wordListTitle, userid);
-    dispatch(wordListsSlice.actions.replace([newWordsList, ...wordLists]))
+    await dispatch(wordListsSlice.actions.replace([newWordsList, ...wordLists]))
+    return true;
   } catch (error) {
     console.log('error')
     console.log(error)
     console.log('busted')
+    return false;
   }
 }
 

@@ -41,9 +41,10 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
 
   const wordLists = useSelector(selectLists);
 
-  function addList(newWordListName: string) {
-    if (!user) return;
-    dispatch(postWordlistsAction(newWordListName, user.id, wordLists));
+  async function addList(newWordListName: string): Promise<boolean> {
+    if (!user) return false;
+
+    return await dispatch(postWordlistsAction(newWordListName, user.id, wordLists));
   }
 
   const deleteList = (listId: string) => {
@@ -58,7 +59,7 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
     dispatch(addSenseToWordlistsAction(dto));
   }
 
-  const updateListName = (newName: string, listId: string) => {
+  const updateListName = async (newName: string, listId: string) => {
     const listToUpdate = wordLists.find((list) => list.ID === listId);
     if (!listToUpdate) return;
 

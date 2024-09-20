@@ -23,9 +23,10 @@ export const WordListPage = () => {
 
   const wordLists = useSelector(selectLists);
 
-  function addList(newWordListName: string) {
-    if (!user) return;
-    dispatch(postWordlistsAction(newWordListName, user.id, wordLists));
+  async function addList(newWordListName: string): Promise<boolean> {
+    if (!user) return false;
+
+    return await dispatch(postWordlistsAction(newWordListName, user.id, wordLists));
   }
 
   const deleteList = (listId: string) => {

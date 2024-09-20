@@ -28,7 +28,7 @@ import WordListItem from './WordListsItem';
 interface WordListsProps {
   wordLists: SenseListDto[]
   displayAddWordBtn?: boolean,
-  onAddNewList: (newWordListName: string) => void,
+  onAddNewList: (newWordListName: string) => Promise<boolean>,
   onDeleteList: (listId: string) => void,
   onAddSenseToWordlist: (listId: string) => void,
   onUpdateListName: (newName: string, id: string) => Promise<void>;
@@ -40,8 +40,9 @@ export const WordLists = ({ wordLists, displayAddWordBtn = false,
   const [newWordList, setNewWordList] = useState('');
 
   function addListEv() {
-    onAddNewList(newWordList);
-    setNewWordList('')
+    onAddNewList(newWordList).then(() => {
+      setNewWordList('')
+    })
   }
 
   const navigateToList = (listId: string) => {
