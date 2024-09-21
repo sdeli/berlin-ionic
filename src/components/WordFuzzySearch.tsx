@@ -1,34 +1,34 @@
-import { ChangeEvent, FormEventHandler, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import styles from './WordFuzzySearch.module.scss';
-import { useAppDispatch } from '../redux/hooks';
-import { selectChosenWord, selectWords } from '../redux/wordSlice';
-import './WordFuzzySearch.module.scss'
 import Autocomplete, { AutocompleteChangeDetails, AutocompleteChangeReason, AutocompleteRenderInputParams } from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { fetchChosenWordAction, fetchWordsAction } from '../redux/wordActions';
-import { selectUser } from '../redux/authSlice';
+import { ChangeEvent, FormEventHandler, useState } from 'react';
+import './WordFuzzySearch.module.scss';
+import { WordDTO } from '../dto';
+import style from './WordFuzzySearch.module.scss';
+import reactLogo from '../assets/react.svg';
 
-export default function WordFuzzySearch() {
-  const chosenWord = useSelector(selectChosenWord);
-  const user = useSelector(selectUser);
+// import { debounce } from '@mui/material/utils'
 
-  const defaultInputValue = chosenWord ? chosenWord.text : '';
+export interface WordsItems {
+  label: string,
+  id: number
+}
+
+export interface WordFuzzySearchProps {
+  chosenWord: string | null;
+  words: WordsItems[];
+  onChangeEv: (chosenWordsText: string) => void;
+  onTypeEv: (inputValue: string) => void
+}
+
+export default function WordFuzzySearch({ chosenWord, words, onChangeEv, onTypeEv }: WordFuzzySearchProps) {
+  const defaultInputValue = chosenWord || '';
+  // akarunk erre itt mindig renderelni
   const [inputValue, setInputValue] = useState(defaultInputValue);
 
-  const dispatch = useAppDispatch();
-
-  const words = useSelector(selectWords)
-  const wordsItems = words.map((word) => {
-    return {
-      label: word.text,
-    }
-  });
-
-  const handleInputChange: FormEventHandler<HTMLDivElement> = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleType: FormEventHandler<HTMLDivElement> = (event: ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     setInputValue(event.target.value);
-    dispatch(fetchWordsAction(inputValue));
+    onTypeEv(inputValue)
   };
 
   const onChangeHandler = (
@@ -37,22 +37,26 @@ export default function WordFuzzySearch() {
     reason: AutocompleteChangeReason,
     details?: AutocompleteChangeDetails<{ label: string; id: number }>
   ) => {
-    const chosenWord = words.find((word) => word.text === value?.label)
+    const chosenWord = words.find((word) => word.label === value?.label)
     if (chosenWord) {
-      setInputValue(chosenWord.text);
-      const userId = user ? user.id : null;
-      dispatch(fetchChosenWordAction(chosenWord.text, userId));
+      setInputValue(chosenWord.label);
+      onChangeEv(chosenWord.label);
     }
   }
 
   return (
-    <div>
+    <div className={style.main}>
+      <div className={style.logo}>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+
       <Autocomplete
         disablePortal
         onChange={onChangeHandler}
-        onInput={handleInputChange}
-        //@ts-ignore
-        options={wordsItems}
+        onInput={handleType}
+        options={words}
         //@ts-ignore
         value={inputValue}
         sx={{ width: 300 }}

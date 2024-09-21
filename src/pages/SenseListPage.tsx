@@ -6,13 +6,32 @@ import { personCircle, personCircleOutline, removeCircleOutline } from 'ionicons
 import { useAppDispatch } from '../redux/hooks';
 import { fetchWordlistsByUserIdAction, removeSenseFromWordlistAction } from '../redux/wordListsActions';
 import { selectUser } from '../redux/authSlice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { MainLoader } from '../components/MainLoader';
+import { selectChosenWord, selectWords } from '../redux/wordSlice';
+import { clearChosenWordAction, clearWordsAction, fetchChosenWordAction, fetchWordsAction } from '../redux/wordActions';
+import WordFuzzySearch from '../components/WordFuzzySearch';
+import { SenseLineDTO } from '../dto';
+import { TextField } from '@mui/material';
+import reactLogo from '../assets/react.svg';
+import style from './SenseListPage.module.scss';
+import { highlightChosenWord } from '../libs/utils';
 
 const SenseListPage = () => {
-  const dispatch = useAppDispatch();
-  const { id: activeListId } = useParams<{ id: string }>();
   const user = useSelector(selectUser);
+  if (!user) return (<div>User missing</div>)
+
+  const [chosenWord, setChosenWord] = useState('');
+
+  useEffect(() => {
+    const storedWord = localStorage.getItem('chosenWord');
+    if (storedWord) {
+      setChosenWord(storedWord);
+    }
+  }, []);
+  const { id: activeListId } = useParams<{ id: string }>();
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (user) {
@@ -28,8 +47,30 @@ const SenseListPage = () => {
     dispatch(removeSenseFromWordlistAction(lineId, listId));
   }
 
-  let lines = !activeList.senseLines ? 'no line to show' : activeList.senseLines.map((line) => {
-    const sourceText = line.source.text;
+  const handleType = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChosenWord(event.target.value);
+    localStorage.setItem('chosenWord', event.target.value);
+  }
+
+  let senseLines: SenseLineDTO[] = [];
+  const listHasAddedWords = activeList.senseLines && activeList.senseLines.length;
+  if (listHasAddedWords) {
+    if (chosenWord) {
+      senseLines = activeList.senseLines.filter((line) => {
+        return line.source.text.toLocaleLowerCase().includes(chosenWord.toLocaleLowerCase());
+      });
+    } else {
+      senseLines = activeList.senseLines;
+    }
+  }
+
+  let lines = !senseLines ? 'no lines to show' : senseLines.map((line) => {
+    let sourceText: string;
+    if (chosenWord) {
+      sourceText = highlightChosenWord(chosenWord, line.source.text);
+    } else {
+      sourceText = line.source.text;
+    }
 
     return (
       <div key={line.ID} className="senses-table-row">
@@ -77,7 +118,24 @@ const SenseListPage = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
+
       <IonContent>
+        <div style={{ marginTop: '50px' }} className={style.main}>
+          <div className={style.logo}>
+            <a href="https://react.dev" target="_blank">
+              <img src={reactLogo} className="logo react" alt="React logo" />
+            </a>
+          </div>
+          <div style={{ width: '300px' }}>
+            <TextField
+              onChange={handleType}
+              id="outlined-basic" label={'Search in ' + activeList.title} variant="outlined"
+              fullWidth={true}
+              value={chosenWord}
+            />
+          </div>
+        </div>
+
         <div
           style={{
             display: 'flex',

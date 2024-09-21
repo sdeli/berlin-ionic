@@ -10,7 +10,7 @@ export const SensesTableSkeleton = () => (
         paddingRight: '7px',
       }}>
         <div className="senses-table-row-skeleton" style={{
-          display: 'flex', justifyContent: 'space-around', padding: '10px 10px 0px;', paddingBottom: '9px',
+          display: 'flex', justifyContent: 'space-around', padding: '10px 10px 0px', paddingBottom: '9px',
 
         }}>
           <div className="senses-table-data-skeleton" style={{ height: '30px', width: '48%', paddingLeft: '10px' }}>
@@ -114,7 +114,7 @@ export const SensesTableSkeleton = () => (
         paddingRight: '7px',
       }}>
         <div className="senses-table-row-skeleton" style={{
-          display: 'flex', justifyContent: 'space-around', padding: '10px 10px 0px;',
+          display: 'flex', justifyContent: 'space-around', padding: '10px 10px 0px',
           paddingBottom: '9px'
         }}>
           <div className="senses-table-data-skeleton" style={{ height: '30px', width: '48%', paddingLeft: '10px' }}>

@@ -26,8 +26,14 @@ export const wordSlice = createSlice({
         return wordDto;
       });
     },
+    clearWords: (state: WordState) => {
+      state.words = []
+    },
     setChosenWord: (state: WordState, action: PayloadAction<WordDTO>) => {
       state.chosenWord = action.payload
+    },
+    clearChosenWord: (state: WordState) => {
+      state.chosenWord = null
     },
     setChosenWordIsLoading: (state: WordState, action: PayloadAction<boolean>) => {
       state.chosenWordIsLoading = action.payload

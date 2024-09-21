@@ -3,7 +3,6 @@ import {
   IonItem,
   IonLabel,
   IonInput,
-  IonNote,
   IonButton,
   IonIcon,
 } from '@ionic/react';
@@ -107,7 +106,7 @@ const WordListItem: React.FC<WordListItemProps> = ({
             right: '35px',
           }}>
             {displayAddWordBtn && (
-              <IonButton size="small" onClick={addSenseToWordlistsEv}>
+              <IonButton style={{ zIndex: 1000 }} size="small" onClick={addSenseToWordlistsEv}>
                 add word
               </IonButton>
             )}
