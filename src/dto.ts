@@ -95,3 +95,10 @@ export interface AddWordToSearchHistoryDto {
 export interface FetchSenseListByUserIdDto {
   userId: string;
 }
+
+export interface AddWordDto {
+  userId: string;
+  germanWord: string;
+  englishWord: string;
+  listIds: string[];
+}

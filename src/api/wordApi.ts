@@ -1,4 +1,4 @@
-import { WordDTO } from '../dto';
+import { AddWordDto, WordDTO } from '../dto';
 import { createQueryString } from '../libs/utils';
 import httpClient from './httpClient';
 
@@ -12,6 +12,11 @@ export async function fetchAllWords(filter?: WordFilter) {
   const response = await httpClient.get<WordDTO[]>(url)
   const words = response.data;
   return words;
+}
+
+export async function addWord(dto: AddWordDto) {
+  const url = '/word/add-to-user';
+  await httpClient.post<void>(url, dto)
 }
 
 export async function fetchWord(filter?: WordFilter) {

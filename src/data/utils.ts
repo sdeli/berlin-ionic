@@ -63,3 +63,11 @@ export const validateForm = (fields: LoginFormField[]): ValidationError[] => {
 
   return errors;
 };
+
+export function isStringArray(something: any): string[] | false {
+  if (Array.isArray(something) && something.every(item => typeof item === 'string')) {
+    return something
+  } else {
+    return false;
+  }
+}

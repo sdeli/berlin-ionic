@@ -1,14 +1,29 @@
 import { AnyAction, ThunkAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { fetchAllWords, fetchWord } from '../api/wordApi';
+import { addWord, fetchAllWords, fetchWord } from '../api/wordApi';
 import { wordSlice } from './wordSlice';
 import { addWordToSearchHistory } from '../api/wordListsApi';
+import { AddWordDto, addWordDto } from '../dto';
+import { fetchWordlistsByUserIdAction } from './wordListsActions';
 
 export const fetchWordsAction = (searchedWord?: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
   searchedWord = searchedWord || '';
   try {
     const words = await fetchAllWords({ text: searchedWord, limit: 10 });
     dispatch(wordSlice.actions.replace(words));
+  } catch (error) {
+    console.log('error')
+    console.log(error)
+  }
+}
+
+export const addWordAction = (dto: AddWordDto): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+  try {
+    await addWord(dto);
+    if (dto.listIds.length) {
+      dispatch(fetchWordlistsByUserIdAction(dto.userId))
+    }
+    return true;
   } catch (error) {
     console.log('error')
     console.log(error)

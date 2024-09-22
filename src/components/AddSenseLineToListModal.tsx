@@ -44,7 +44,7 @@ export const AddSenseLineToListModal = ({ isOpen, onClose, line }: AddSenseLineT
   async function addList(newWordListName: string): Promise<boolean> {
     if (!user) return false;
 
-    return await dispatch(postWordlistsAction(newWordListName, user.id, wordLists));
+    return dispatch(postWordlistsAction(newWordListName, user.id, wordLists));
   }
 
   const deleteList = (listId: string) => {
