@@ -16,7 +16,6 @@
  - on chosing word in autocomple field skeleton shows loading then word tables appear
  - in word tables lines main word is highlighted with strong tag
  - can open modal by clicking + icon at each line
- 
  - ### Modal
    - can add a list
    - can see lists
@@ -31,6 +30,7 @@
   - can delete word
   - can search in words
    - searched word is highgighted in result texts, uppercase kept
+   - search state kept until user closes the site, or session storage is done
 
 ## Settings Page
  - Toggle Dark mode

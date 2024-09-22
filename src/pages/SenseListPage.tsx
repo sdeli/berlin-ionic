@@ -21,14 +21,8 @@ const SenseListPage = () => {
   const user = useSelector(selectUser);
   if (!user) return (<div>User missing</div>)
 
-  const [chosenWord, setChosenWord] = useState('');
-
-  useEffect(() => {
-    const storedWord = localStorage.getItem('chosenWord');
-    if (storedWord) {
-      setChosenWord(storedWord);
-    }
-  }, []);
+  const storedWord = sessionStorage.getItem('chosenWord');
+  const [chosenWord, setChosenWord] = useState(storedWord || '');
   const { id: activeListId } = useParams<{ id: string }>();
 
   const dispatch = useAppDispatch();
@@ -49,7 +43,7 @@ const SenseListPage = () => {
 
   const handleType = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChosenWord(event.target.value);
-    localStorage.setItem('chosenWord', event.target.value);
+    sessionStorage.setItem('chosenWord', event.target.value);
   }
 
   let senseLines: SenseLineDTO[] = [];
@@ -120,21 +114,25 @@ const SenseListPage = () => {
       </IonHeader>
 
       <IonContent>
-        <div style={{ marginTop: '50px' }} className={style.main}>
-          <div className={style.logo}>
-            <a href="https://react.dev" target="_blank">
-              <img src={reactLogo} className="logo react" alt="React logo" />
-            </a>
+        {listHasAddedWords ?
+          <div style={{ marginTop: '50px' }} className={style.main}>
+            <>
+              <div className={style.logo}>
+                <a href="https://react.dev" target="_blank">
+                  <img src={reactLogo} className="logo react" alt="React logo" />
+                </a>
+              </div>
+              <div style={{ width: '300px' }}>
+                <TextField
+                  onChange={handleType}
+                  id="outlined-basic" label={'Search in ' + activeList.title} variant="outlined"
+                  fullWidth={true}
+                  value={chosenWord}
+                />
+              </div>
+            </>
           </div>
-          <div style={{ width: '300px' }}>
-            <TextField
-              onChange={handleType}
-              id="outlined-basic" label={'Search in ' + activeList.title} variant="outlined"
-              fullWidth={true}
-              value={chosenWord}
-            />
-          </div>
-        </div>
+          : ''}
 
         <div
           style={{
