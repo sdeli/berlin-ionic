@@ -46,10 +46,9 @@ export async function addSenseToWordlists(dto: AddSenseToWordlistsDto) {
   return wordsLists;
 }
 
-export async function addWordToSearchHistory(wordId: string, userId: string) {
+export async function addWordToSearchHistory(dto: AddWordToSearchHistoryDto) {
   const addurl = url + '/history'
-  const data: AddWordToSearchHistoryDto = { wordId, userId };
-  const response = await httpClient.post<SenseListDto>(addurl, data)
+  const response = await httpClient.post<SenseListDto>(addurl, dto)
   const wordsLists = response.data;
   return wordsLists;
 }

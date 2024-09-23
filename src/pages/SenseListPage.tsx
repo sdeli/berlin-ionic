@@ -8,9 +8,6 @@ import { fetchWordlistsByUserIdAction, removeSenseFromWordlistAction } from '../
 import { selectUser } from '../redux/authSlice';
 import { useEffect, useState } from 'react';
 import { MainLoader } from '../components/MainLoader';
-import { selectChosenWord, selectWords } from '../redux/wordSlice';
-import { clearChosenWordAction, clearWordsAction, fetchChosenWordAction, fetchWordsAction } from '../redux/wordActions';
-import WordFuzzySearch from '../components/WordFuzzySearch';
 import { SenseLineDTO } from '../dto';
 import { TextField } from '@mui/material';
 import reactLogo from '../assets/react.svg';

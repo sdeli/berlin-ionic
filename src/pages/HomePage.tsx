@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
       dispatch(clearChosenWordAction());
       dispatch(clearWordsAction());
     } else {
-      dispatch(fetchWordsAction(inputValue));
+      dispatch(fetchWordsAction(user.id, inputValue));
     }
   };
 

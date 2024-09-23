@@ -3,13 +3,13 @@ import { RootState } from './store';
 import { addWord, fetchAllWords, fetchWord } from '../api/wordApi';
 import { wordSlice } from './wordSlice';
 import { addWordToSearchHistory } from '../api/wordListsApi';
-import { AddWordDto, addWordDto } from '../dto';
+import { AddWordDto, addWordDto, AddWordToSearchHistoryDto } from '../dto';
 import { fetchWordlistsByUserIdAction } from './wordListsActions';
 
-export const fetchWordsAction = (searchedWord?: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+export const fetchWordsAction = (userId: string, searchedWord?: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
   searchedWord = searchedWord || '';
   try {
-    const words = await fetchAllWords({ text: searchedWord, limit: 10 });
+    const words = await fetchAllWords({ text: searchedWord, limit: 10, userId });
     dispatch(wordSlice.actions.replace(words));
   } catch (error) {
     console.log('error')
@@ -47,16 +47,20 @@ export const clearChosenWordAction = (): ThunkAction<void, RootState, unknown, A
   }
 }
 
-export const fetchChosenWordAction = (searchedWord: string, userId: string | null = null): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+export const fetchChosenWordAction = (searchedWord: string, userId: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
   searchedWord = searchedWord || '';
-  const filter = { text: searchedWord, limit: 1 }
+  const filter = { text: searchedWord, limit: 1, userId }
   dispatch(wordSlice.actions.setChosenWordIsLoading(true))
   try {
     const word = await fetchWord(filter);
     dispatch(wordSlice.actions.setChosenWord(word))
     dispatch(wordSlice.actions.setChosenWordIsLoading(false))
     if (userId) {
-      await addWordToSearchHistory(word.ID, userId)
+      const dto: AddWordToSearchHistoryDto = {
+        userId: userId,
+        wordId: word.ID
+      }
+      await addWordToSearchHistory(dto)
     }
     return true;
   } catch (error) {
