@@ -13,6 +13,7 @@
 
 ## Home/Search Page
  - can search for word in autocomplete fiels and shows dropdown with word suggestions debounced
+ - searched words automatically added to 'search history'
  - on chosing word in autocomple field skeleton shows loading then word tables appear
  - in word tables lines main word is highlighted with strong tag
  - can open modal by clicking + icon at each line
@@ -24,6 +25,7 @@
    - can delete list by clicking three dots icon
 
 ## WordsList Page
+ - 'search history' list automaticaly created on register 
 
 ## Words of Wordlist Page
   - can see words of wordlist
@@ -34,3 +36,8 @@
 
 ## Settings Page
  - Toggle Dark mode
+
+## Add New Word Page
+ - can add new word
+ - can add to list when creating
+ - to other users it doesnt appear on search page
