@@ -113,12 +113,10 @@ const SenseListPage = () => {
       <IonContent>
         {listHasAddedWords ?
           <div style={{ marginTop: '50px' }} className={style.main}>
-            <>
-              <div className={style.logo}>
-                <a href="https://react.dev" target="_blank">
-                  <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-              </div>
+            <div className={style.center}>
+              <a href="https://react.dev" className={style.logo} target="_blank">
+                <img src={reactLogo} className="logo react" alt="React logo" />
+              </a>
               <div style={{ width: '300px' }}>
                 <TextField
                   onChange={handleType}
@@ -127,7 +125,7 @@ const SenseListPage = () => {
                   value={chosenWord}
                 />
               </div>
-            </>
+            </div>
           </div>
           : ''}
 
@@ -149,7 +147,7 @@ const SenseListPage = () => {
             </div>
           </div>
         </div>
-      </IonContent>
+      </IonContent >
     </>
   );
 }

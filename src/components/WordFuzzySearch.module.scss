@@ -1,12 +1,16 @@
-.logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 10px;
-}
-
 .main {
   display: flex;
   justify-content: center;
-  width: 100%;
 }
+
+.center {
+  display: inline-block;
+  position: relative;
+}
+
+.logo {
+  position: absolute;
+  left: -50px;
+  top: 11px;
+}
+

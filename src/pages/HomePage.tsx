@@ -61,14 +61,12 @@ const HomePage: React.FC = () => {
         <div
           style={{ marginTop: '50px' }}
         >
-          <div>
-            <WordFuzzySearch
-              chosenWord={chosenWord?.text || ''}
-              words={wordsItems}
-              onChangeEv={onChangeHandler}
-              onTypeEv={handleType}
-            ></WordFuzzySearch>
-          </div>
+          <WordFuzzySearch
+            chosenWord={chosenWord?.text || ''}
+            words={wordsItems}
+            onChangeEv={onChangeHandler}
+            onTypeEv={handleType}
+          ></WordFuzzySearch>
           <br></br>
           <div style={{
             maxWidth: '1000px',

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonList, IonListHeader, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import React, { useState, useEffect, ChangeEventHandler, ChangeEvent } from 'react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonList, IonListHeader, IonSelect, IonSelectOption, IonTitle, IonToolbar, SelectChangeEventDetail } from '@ionic/react';
+import { IonSelectCustomEvent } from '@ionic/core';
 import { MainLoader } from '../components/MainLoader';
 import { personCircle, personCircleOutline } from 'ionicons/icons';
 import { TextField } from '@mui/material';
@@ -27,26 +28,19 @@ const SearchPage = () => {
   const [germanWord, setGermanWord] = useState('');
   const [englishWord, setEnglishWord] = useState('');
   const [selectedLists, setSelectedLists] = useState<string[]>([]);
-
   useEffect(() => {
     const storedGermanWord = sessionStorage.getItem('germanWord');
     const storedEnglishWord = sessionStorage.getItem('englishWord');
-    const storedLists = sessionStorage.getItem('selectedLists');
-
+    let storedLists = sessionStorage.getItem('selectedLists');
     if (storedGermanWord) setGermanWord(storedGermanWord);
     if (storedEnglishWord) setEnglishWord(storedEnglishWord);
-    if (storedLists) {
-      const storedListsArr = isStringArray(JSON.parse(storedLists))
-      if (storedListsArr) setSelectedLists(storedListsArr);
+
+    if (!storedLists) return;
+    const storedListsArr = JSON.parse(storedLists)
+    if (storedListsArr) {
+      setSelectedLists(storedListsArr)
     }
   }, []);
-
-  // Store data in sessionStorage when inputs change
-  useEffect(() => {
-    sessionStorage.setItem('germanWord', germanWord);
-    sessionStorage.setItem('englishWord', englishWord);
-    sessionStorage.setItem('selectedLists', JSON.stringify(selectedLists));
-  }, [germanWord, englishWord, selectedLists]);
 
   const ionSelectOptions = wordLists.filter(list => list.title !== 'Search History').map((list, i) =>
     <IonSelectOption key={i} value={list.ID}>{list.title}</IonSelectOption>
@@ -61,10 +55,33 @@ const SearchPage = () => {
       listIds: selectedLists,
       userId: user?.id
     }
-
-    console.log({ germanWord, englishWord, selectedLists });
     return dispatch(addWordAction(dto))
   };
+
+  function handleGermanWordChange(event: ChangeEvent<HTMLInputElement>) {
+    setGermanWord(event.target.value)
+    sessionStorage.setItem('germanWord', event.target.value);
+  }
+
+  function handleEnglishWordChange(event: ChangeEvent<HTMLInputElement>) {
+    setEnglishWord(event.target.value)
+    sessionStorage.setItem('englishWord', event.target.value);
+  }
+
+  function handleSelectedListChange(event: IonSelectCustomEvent<SelectChangeEventDetail>) {
+    if (Array.isArray(!event.target.value)) return false;
+    if (!event.target.value.length) {
+      setSelectedLists([]);
+      sessionStorage.setItem('selectedLists', JSON.stringify([]));
+      return;
+    }
+    const isValidValue = isStringArray(event.target.value);
+    if (isValidValue) {
+      setSelectedLists(event.target.value);
+      sessionStorage.setItem('selectedLists', JSON.stringify(event.target.value));
+
+    }
+  }
 
   return (
     <>
@@ -95,7 +112,7 @@ const SearchPage = () => {
               variant="outlined"
               fullWidth
               value={germanWord}
-              onChange={(e) => setGermanWord(e.target.value)}
+              onChange={handleGermanWordChange}
             />
             <TextField
               style={{ marginBottom: '20px' }}
@@ -104,9 +121,9 @@ const SearchPage = () => {
               variant="outlined"
               fullWidth
               value={englishWord}
-              onChange={(e) => setEnglishWord(e.target.value)}
+              onChange={handleEnglishWordChange}
             />
-            {ionSelectOptions &&
+            {!!ionSelectOptions.length &&
               <IonList style={{ marginBottom: '20px' }}>
                 <IonItem>
                   <IonSelect
@@ -114,7 +131,7 @@ const SearchPage = () => {
                     placeholder="Choose a list"
                     multiple={true}
                     value={selectedLists}
-                    onIonChange={(e) => setSelectedLists(e.detail.value)}
+                    onIonChange={handleSelectedListChange}
                   >
                     {ionSelectOptions}
                   </IonSelect>

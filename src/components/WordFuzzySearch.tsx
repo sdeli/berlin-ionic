@@ -2,7 +2,6 @@ import Autocomplete, { AutocompleteChangeDetails, AutocompleteChangeReason, Auto
 import TextField from '@mui/material/TextField';
 import { ChangeEvent, FormEventHandler, useState } from 'react';
 import './WordFuzzySearch.module.scss';
-import { WordDTO } from '../dto';
 import style from './WordFuzzySearch.module.scss';
 import reactLogo from '../assets/react.svg';
 
@@ -46,22 +45,22 @@ export default function WordFuzzySearch({ chosenWord, words, onChangeEv, onTypeE
 
   return (
     <div className={style.main}>
-      <div className={style.logo}>
+      <div className={style.center}>
         <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
+          <img src={reactLogo} className={"logo react " + style.logo} alt="React logo" />
         </a>
-      </div>
+        <Autocomplete
+          disablePortal
+          onChange={onChangeHandler}
+          onInput={handleType}
+          options={words}
+          //@ts-ignore
+          value={inputValue}
+          sx={{ width: 300 }}
+          renderInput={(params: AutocompleteRenderInputParams) => <TextField {...params} label="Search" />}
+        />
 
-      <Autocomplete
-        disablePortal
-        onChange={onChangeHandler}
-        onInput={handleType}
-        options={words}
-        //@ts-ignore
-        value={inputValue}
-        sx={{ width: 300 }}
-        renderInput={(params: AutocompleteRenderInputParams) => <TextField {...params} label="Search" />}
-      />
+      </div>
     </div>
   )
 }
