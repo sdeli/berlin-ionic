@@ -28,6 +28,12 @@ export const wordListsSlice = createSlice({
         return lists;
       });
     },
+    deleteLine: (state: WordListsState, action: PayloadAction<{ listId: string, lineId: string }>) => {
+      const list = state.lists.find((list) => list.ID === action.payload.listId)
+
+      if (!list) return;
+      list.senseLines = list.senseLines.filter((line) => line.ID !== action.payload.lineId)
+    },
     replaceOne: (state: WordListsState, action: PayloadAction<SenseListDto>) => {
       state.lists = state.lists.map((list) => {
         if (list.ID === action.payload.ID) {

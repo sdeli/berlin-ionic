@@ -1,18 +1,11 @@
 import "./SensesTable.scss";
 
 import {
-  IonButtons,
   IonButton,
-  IonModal,
-  IonHeader,
   IonContent,
-  IonToolbar,
-  IonTitle,
   IonItem,
   IonInput,
   IonList,
-  IonLabel,
-  IonNote,
 } from '@ionic/react';
 import { useState } from 'react';
 import { DefaultListNamesDto, SenseListDto } from '../dto';
@@ -50,6 +43,11 @@ export const WordLists = ({ wordLists, displayAddWordBtn = false,
   const updateListName = (name: string, listId: string) => {
     return onUpdateListName(name, listId);
   }
+  wordLists = wordLists.filter((wordList) => {
+    if (wordList.title !== DefaultListNamesDto.YourWords) return true;
+    const yourWordListShouldNotBeEmtpy = !!wordList.senseLines.length
+    return yourWordListShouldNotBeEmtpy;
+  })
 
   wordLists = moveToFrontByTitle(wordLists, DefaultListNamesDto.YourWords);
   wordLists = moveToFrontByTitle(wordLists, DefaultListNamesDto.SearchHistory);

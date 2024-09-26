@@ -1,16 +1,28 @@
 import { AnyAction, ThunkAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { addWord, fetchAllWords, fetchWord } from '../api/wordApi';
+import { addWord, deleteWordByLine, fetchAllWords, fetchWord } from '../api/wordApi';
 import { wordSlice } from './wordSlice';
 import { addWordToSearchHistory } from '../api/wordListsApi';
-import { AddWordDto, addWordDto, AddWordToSearchHistoryDto } from '../dto';
+import { AddWordDto, AddWordToSearchHistoryDto, deleteWordDto } from '../dto';
 import { fetchWordlistsByUserIdAction } from './wordListsActions';
+import { wordListsSlice } from './wordListsSlice';
 
 export const fetchWordsAction = (userId: string, searchedWord?: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
   searchedWord = searchedWord || '';
   try {
     const words = await fetchAllWords({ text: searchedWord, limit: 10, userId });
     dispatch(wordSlice.actions.replace(words));
+  } catch (error) {
+    console.log('error')
+    console.log(error)
+  }
+}
+
+export const deleteWordByLineAction = (dto: deleteWordDto, listId: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+  try {
+    const wordId = await deleteWordByLine(dto);
+    dispatch(wordSlice.actions.delete(wordId));
+    dispatch(wordListsSlice.actions.deleteLine({ listId, lineId: dto.lineId }));
   } catch (error) {
     console.log('error')
     console.log(error)

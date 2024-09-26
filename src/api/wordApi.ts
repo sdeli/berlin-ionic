@@ -1,6 +1,8 @@
-import { AddWordDto, WordDTO } from '../dto';
+import { AxiosResponse } from 'axios';
+import { AddWordDto, deleteWordDto, WordDTO } from '../dto';
 import { createQueryString } from '../libs/utils';
 import httpClient from './httpClient';
+import { isUUID } from '../data/utils';
 
 interface WordFilterDto {
   text: string,
@@ -25,4 +27,15 @@ export async function fetchWord(filter: WordFilterDto) {
   const response = await httpClient.get<WordDTO[]>(url)
   const word = response.data[0];
   return word;
+}
+
+export async function deleteWordByLine(dto: deleteWordDto) {
+  const url = '/word';
+  const response = await httpClient.delete<deleteWordDto, AxiosResponse<string>>(url, { data: dto })
+  const isValid = typeof response.data === 'string';
+  if (isValid && isUUID(response.data)) {
+    return response.data;
+  } else {
+    throw new Error('invalid response')
+  }
 }

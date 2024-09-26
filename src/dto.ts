@@ -103,6 +103,11 @@ export interface AddWordDto {
   listIds: string[];
 }
 
+export interface deleteWordDto {
+  userId: string;
+  lineId: string;
+}
+
 export enum DefaultListNamesDto {
   SearchHistory = 'Search History',
   YourWords = 'Your Words',

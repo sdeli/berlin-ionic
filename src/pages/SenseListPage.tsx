@@ -8,11 +8,12 @@ import { fetchWordlistsByUserIdAction, removeSenseFromWordlistAction } from '../
 import { selectUser } from '../redux/authSlice';
 import { useEffect, useState } from 'react';
 import { MainLoader } from '../components/MainLoader';
-import { SenseLineDTO } from '../dto';
+import { DefaultListNamesDto, SenseLineDTO } from '../dto';
 import { TextField } from '@mui/material';
 import reactLogo from '../assets/react.svg';
 import style from './SenseListPage.module.scss';
 import { highlightChosenWord } from '../libs/utils';
+import { deleteWordByLineAction, deleteWordsAction } from '../redux/wordActions';
 
 const SenseListPage = () => {
   const user = useSelector(selectUser);
@@ -35,7 +36,12 @@ const SenseListPage = () => {
   if (!activeList) return (<></>);
 
   const removeSenseFromWordlist = (lineId: string, listId: string) => {
-    dispatch(removeSenseFromWordlistAction(lineId, listId));
+    const isAddedWord = activeList.title === DefaultListNamesDto.YourWords;
+    if (isAddedWord) {
+      dispatch(deleteWordByLineAction({ userId: user.id, lineId: lineId }, listId));
+    } else {
+      dispatch(removeSenseFromWordlistAction(lineId, listId));
+    }
   }
 
   const handleType = (event: React.ChangeEvent<HTMLInputElement>) => {

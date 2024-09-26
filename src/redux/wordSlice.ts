@@ -26,6 +26,9 @@ export const wordSlice = createSlice({
         return wordDto;
       });
     },
+    delete: (state: WordState, action: PayloadAction<string>) => {
+      state.words = state.words.filter((word) => word.ID !== action.payload);
+    },
     clearWords: (state: WordState) => {
       state.words = []
     },
