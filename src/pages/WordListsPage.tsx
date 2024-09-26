@@ -73,7 +73,6 @@ export const WordListPage = () => {
           onAddSenseToWordlist={() => { }}
           onUpdateListName={updateListName}
         ></WordLists>
-
       </div>
     </>
   );

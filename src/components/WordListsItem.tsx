@@ -116,6 +116,8 @@ const WordListItem: React.FC<WordListItemProps> = ({
               <WordListLocalMenu
                 onDelete={deleteListEv}
                 onEdit={editList}
+                title={list.title}
+                id={list.ID}
               />
             </div>
           </div>

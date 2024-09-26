@@ -7,42 +7,46 @@ import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Stack from '@mui/material/Stack';
-import { IonIcon } from '@ionic/react';
+import { IonActionSheet, IonIcon } from '@ionic/react';
 import { ellipsisVerticalCircle } from 'ionicons/icons';
+import { OverlayEventDetail } from '@ionic/core';
+
+enum SheetActions {
+  Delete = "Delete",
+  Edit = "Edit",
+  Cancel = "Cancel",
+}
+
+interface SheetData {
+  action: SheetActions,
+  listId: string,
+}
 
 export interface props {
   onEdit: () => void,
   onDelete: () => void,
+  title: string,
+  id: string,
 }
 
-export default function MenuListComposition({ onEdit, onDelete }: props) {
+export default function WordListLocalMenu({ onEdit, onDelete, title, id }: props) {
   const [isOpen, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
   const handleToggle = (e: any) => {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleClose = (event: Event | React.SyntheticEvent) => {
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target as HTMLElement)
-    ) {
-      return;
+  const logResult = (result: OverlayEventDetail<SheetActions>) => {
+    console.log(JSON.stringify(result, null, 2));
+    if (result.data === SheetActions.Edit) {
+      onEdit()
     }
 
-    setOpen(false);
+    if (result.data === SheetActions.Delete) {
+      onDelete()
+    }
   };
 
-  function handleListKeyDown(event: React.KeyboardEvent) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false);
-    } else if (event.key === 'Escape') {
-      setOpen(false);
-    }
-  }
-
-  // return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(isOpen);
   React.useEffect(() => {
     if (prevOpen.current === true && isOpen === false) {
@@ -58,8 +62,9 @@ export default function MenuListComposition({ onEdit, onDelete }: props) {
         zIndex: isOpen ? 900 : 600
       }}>
         <Button
+
           ref={anchorRef}
-          id="composition-button"
+          id={"open-action-sheet-" + id}
           aria-controls={isOpen ? 'composition-menu' : undefined}
           aria-expanded={isOpen ? 'true' : undefined}
           aria-haspopup="true"
@@ -70,48 +75,29 @@ export default function MenuListComposition({ onEdit, onDelete }: props) {
             icon={ellipsisVerticalCircle}
           />
         </Button>
-        <Popper
-          title='sannya'
-          open={isOpen}
-          anchorEl={anchorRef.current}
-          role={undefined}
-          placement="bottom-start"
-          transition
-          disablePortal
-          style={{ zIndex: 1000 }}
-        >
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              style={{
-                transformOrigin:
-                  placement === 'bottom-start' ? 'left top' : 'left bottom',
-              }}
-            >
-              <Paper>
-                <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList
-                    autoFocusItem={isOpen}
-                    id="composition-menu"
-                    aria-labelledby="composition-button"
-                    onKeyDown={handleListKeyDown}
-                  >
-                    <MenuItem onClick={(event) => {
-                      handleClose(event);
-                      onEdit();
-                    }}>Edit</MenuItem>
-
-                    <MenuItem onClick={(event) => {
-                      handleClose(event);
-                      onDelete();
-                    }}
-                    >Delete</MenuItem>
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
+        <IonActionSheet
+          trigger={"open-action-sheet-" + id}
+          header="Actions"
+          mode='ios'
+          onDidDismiss={({ detail }) => logResult(detail)}
+          buttons={[
+            {
+              text: SheetActions.Delete,
+              role: 'edit',
+              data: SheetActions.Delete,
+            },
+            {
+              text: SheetActions.Edit,
+              role: 'edit',
+              data: SheetActions.Edit
+            },
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              data: SheetActions.Cancel,
+            },
+          ]}
+        ></IonActionSheet>
       </div>
     </Stack>
   );

@@ -12,6 +12,7 @@ import { fetchWordlistsByUserIdAction } from '../redux/wordListsActions';
 import { isStringArray } from '../data/utils';
 import { addWordAction } from '../redux/wordActions';
 import { AddWordDto } from '../dto';
+import toastService from '../libs/toastService';
 
 const SearchPage = () => {
   const wordLists = useSelector(selectLists);
@@ -46,7 +47,7 @@ const SearchPage = () => {
     <IonSelectOption key={i} value={list.ID}>{list.title}</IonSelectOption>
   )
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!englishWord) console.log('no english');
     if (!germanWord) console.log('no no german');
     const dto: AddWordDto = {
@@ -55,7 +56,12 @@ const SearchPage = () => {
       listIds: selectedLists,
       userId: user?.id
     }
-    return dispatch(addWordAction(dto))
+    dispatch(addWordAction(dto)).then((succesfullySaved) => {
+      if (succesfullySaved) {
+        resetAddWordForm();
+        toastService.showSuccessToast('Your word has been succesfully saved!');
+      }
+    })
   };
 
   function handleGermanWordChange(event: ChangeEvent<HTMLInputElement>) {
@@ -81,6 +87,15 @@ const SearchPage = () => {
       sessionStorage.setItem('selectedLists', JSON.stringify(event.target.value));
 
     }
+  }
+
+  function resetAddWordForm() {
+    setGermanWord('')
+    sessionStorage.setItem('germanWord', '');
+    setEnglishWord('')
+    sessionStorage.setItem('englishWord', '');
+    setSelectedLists([]);
+    sessionStorage.setItem('selectedLists', JSON.stringify([]));
   }
 
   return (

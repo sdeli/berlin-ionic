@@ -17,7 +17,7 @@ export const fetchWordsAction = (userId: string, searchedWord?: string): ThunkAc
   }
 }
 
-export const addWordAction = (dto: AddWordDto): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+export const addWordAction = (dto: AddWordDto): ThunkAction<Promise<boolean>, RootState, unknown, AnyAction> => async (dispatch) => {
   try {
     await addWord(dto);
     if (dto.listIds.length) {
@@ -27,6 +27,7 @@ export const addWordAction = (dto: AddWordDto): ThunkAction<void, RootState, unk
   } catch (error) {
     console.log('error')
     console.log(error)
+    return false
   }
 }
 
