@@ -11,7 +11,7 @@ import { useAppDispatch } from '../redux/hooks';
 import { fetchWordlistsByUserIdAction } from '../redux/wordListsActions';
 import { isStringArray } from '../data/utils';
 import { addWordAction } from '../redux/wordActions';
-import { AddWordDto } from '../dto';
+import { AddWordDto, DefaultListNamesDto } from '../dto';
 import toastService from '../libs/toastService';
 
 const SearchPage = () => {
@@ -43,7 +43,9 @@ const SearchPage = () => {
     }
   }, []);
 
-  const ionSelectOptions = wordLists.filter(list => list.title !== 'Search History').map((list, i) =>
+  const ionSelectOptions = wordLists.filter(
+    list => list.title !== DefaultListNamesDto.SearchHistory && list.title !== DefaultListNamesDto.YourWords
+  ).map((list, i) =>
     <IonSelectOption key={i} value={list.ID}>{list.title}</IonSelectOption>
   )
 

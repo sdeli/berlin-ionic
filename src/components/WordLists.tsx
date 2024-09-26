@@ -14,16 +14,13 @@ import {
   IonLabel,
   IonNote,
 } from '@ionic/react';
-import { useEffect, useState } from 'react';
-import { AddSenseToWordlistsDto, SenseLineDTO, SenseListDto } from '../dto';
-import { useSelector } from 'react-redux';
-import { selectLists } from '../redux/wordListsSlice';
-import { selectUser } from '../redux/authSlice';
+import { useState } from 'react';
+import { DefaultListNamesDto, SenseListDto } from '../dto';
 import { useAppDispatch } from '../redux/hooks';
-import { addSenseToWordlistsAction, deleteWordlistsAction, fetchWordlistsByUserIdAction, postWordlistsAction, setActiveListIdAction } from '../redux/wordListsActions';
-import WordListLocalMenu from './WordListLocalMenu';
+import { setActiveListIdAction } from '../redux/wordListsActions';
 import { useHistory } from 'react-router-dom';
 import WordListItem from './WordListsItem';
+import { moveToFrontByTitle } from '../data/utils';
 
 interface WordListsProps {
   wordLists: SenseListDto[]
@@ -53,6 +50,9 @@ export const WordLists = ({ wordLists, displayAddWordBtn = false,
   const updateListName = (name: string, listId: string) => {
     return onUpdateListName(name, listId);
   }
+
+  wordLists = moveToFrontByTitle(wordLists, DefaultListNamesDto.YourWords);
+  wordLists = moveToFrontByTitle(wordLists, DefaultListNamesDto.SearchHistory);
 
   const wordlists = wordLists.map((list) =>
     <WordListItem

@@ -25,7 +25,11 @@
    - can delete list by clicking three dots icon
 
 ## WordsList Page
- - 'search history' list automaticaly created on register 
+ - 'search history' list automaticaly created on register
+ - added lists getting displayed
+ - action sheet works for edit and delete
+ - onclick list items take to the words stored in the list
+ - Search History and Your Words appear on the top and do not have a local menu
 
 ## Words of Wordlist Page
   - can see words of wordlist

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { DefaultListNamesDto, SenseListDto } from '../dto';
 
 // Hook: useFormInput
 export interface UseFormInputReturn {
@@ -70,4 +71,16 @@ export function isStringArray(something: any): string[] | false {
   } else {
     return false;
   }
+}
+
+export function moveToFrontByTitle(arr: SenseListDto[], value: DefaultListNamesDto): SenseListDto[] {
+  const defaultItems = arr.filter(item =>
+    item.title === value
+  );
+
+  const remainingItems = arr.filter(item =>
+    item.title !== value
+  );
+
+  return [...defaultItems, ...remainingItems];
 }

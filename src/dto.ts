@@ -102,3 +102,8 @@ export interface AddWordDto {
   englishWord: string;
   listIds: string[];
 }
+
+export enum DefaultListNamesDto {
+  SearchHistory = 'Search History',
+  YourWords = 'Your Words',
+}

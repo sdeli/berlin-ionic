@@ -7,7 +7,7 @@ import {
   IonIcon,
 } from '@ionic/react';
 import WordListLocalMenu from './WordListLocalMenu';
-import { SenseListDto } from '../dto';
+import { DefaultListNamesDto, SenseListDto } from '../dto';
 import { saveOutline } from 'ionicons/icons';
 
 interface WordListItemProps {
@@ -30,7 +30,7 @@ const WordListItem: React.FC<WordListItemProps> = ({
   const [isEdited, setIsEdited] = useState(false);
   const [inputValue, setInputValue] = useState<string>(list.title);
   const inputRef = useRef<HTMLIonInputElement>(null);
-
+  const hasLocalMenu = list.title !== DefaultListNamesDto.SearchHistory && list.title !== DefaultListNamesDto.YourWords;
   const resetInput = () => {
     setInputValue(list.title);
     setIsEdited(false);
@@ -113,12 +113,14 @@ const WordListItem: React.FC<WordListItemProps> = ({
             <div style={{
               ...(displayAddWordBtn && localMenuStyles)
             }}>
-              <WordListLocalMenu
-                onDelete={deleteListEv}
-                onEdit={editList}
-                title={list.title}
-                id={list.ID}
-              />
+              {!!hasLocalMenu &&
+                <WordListLocalMenu
+                  onDelete={deleteListEv}
+                  onEdit={editList}
+                  title={list.title}
+                  id={list.ID}
+                />
+              }
             </div>
           </div>
         </div>
