@@ -48,7 +48,9 @@ const HomePage: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton default-href="#"></IonBackButton>
           </IonButtons>
+
           <IonTitle>Dictionary</IonTitle>
+
           <IonButtons slot="end">
             <IonButton color="dark">
               <IonIcon slot="icon-only" ios={personCircleOutline} md={personCircle}></IonIcon>

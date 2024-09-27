@@ -13,7 +13,7 @@ import { TextField } from '@mui/material';
 import reactLogo from '../assets/react.svg';
 import style from './SenseListPage.module.scss';
 import { highlightChosenWord } from '../libs/utils';
-import { deleteWordByLineAction, deleteWordsAction } from '../redux/wordActions';
+import { deleteWordByLineAction } from '../redux/wordActions';
 
 const SenseListPage = () => {
   const user = useSelector(selectUser);
@@ -22,7 +22,6 @@ const SenseListPage = () => {
   const storedWord = sessionStorage.getItem('chosenWord');
   const [chosenWord, setChosenWord] = useState(storedWord || '');
   const { id: activeListId } = useParams<{ id: string }>();
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -34,6 +33,7 @@ const SenseListPage = () => {
   const wordLists = useSelector(selectLists);
   const activeList = wordLists.find((list => list.ID === activeListId));
   if (!activeList) return (<></>);
+  const canDeleteLines = activeList.title !== DefaultListNamesDto.SearchHistory;
 
   const removeSenseFromWordlist = (lineId: string, listId: string) => {
     const isAddedWord = activeList.title === DefaultListNamesDto.YourWords;
@@ -81,18 +81,21 @@ const SenseListPage = () => {
             <span style={{ width: '85%' }}>
               {line.target.text}
             </span>
-            <span style={{
-              width: '15%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-              <IonIcon
-                onClick={() => { removeSenseFromWordlist(line.ID, activeList.ID) }}
-                style={{ fontSize: '24px', cursor: 'pointer' }}
-                icon={removeCircleOutline}
-              />
-            </span>
+            {
+              !!canDeleteLines &&
+              <span style={{
+                width: '15%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <IonIcon
+                  onClick={() => { removeSenseFromWordlist(line.ID, activeList.ID) }}
+                  style={{ fontSize: '24px', cursor: 'pointer' }}
+                  icon={removeCircleOutline}
+                />
+              </span>
+            }
           </div>
         </div>
       </div>

@@ -1,11 +1,10 @@
 import Autocomplete, { AutocompleteChangeDetails, AutocompleteChangeReason, AutocompleteRenderInputParams } from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { ChangeEvent, FormEventHandler, useState } from 'react';
+import { ChangeEvent, FormEventHandler, useState, useMemo } from 'react';
+import { debounce } from '@mui/material/utils';  // or lodash
 import './WordFuzzySearch.module.scss';
 import style from './WordFuzzySearch.module.scss';
 import reactLogo from '../assets/react.svg';
-
-// import { debounce } from '@mui/material/utils'
 
 export interface WordsItems {
   label: string,
@@ -21,13 +20,15 @@ export interface WordFuzzySearchProps {
 
 export default function WordFuzzySearch({ chosenWord, words, onChangeEv, onTypeEv }: WordFuzzySearchProps) {
   const defaultInputValue = chosenWord || '';
-  // akarunk erre itt mindig renderelni
   const [inputValue, setInputValue] = useState(defaultInputValue);
+
+  const debouncedOnTypeEv = useMemo(() => debounce(onTypeEv, 300), [onTypeEv]);
+  const debouncedOnChangeEv = useMemo(() => debounce(onChangeEv, 300), [onChangeEv]);
 
   const handleType: FormEventHandler<HTMLDivElement> = (event: ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
-    setInputValue(event.target.value);
-    onTypeEv(inputValue)
+    setInputValue(inputValue);
+    debouncedOnTypeEv(inputValue);
   };
 
   const onChangeHandler = (
@@ -39,7 +40,7 @@ export default function WordFuzzySearch({ chosenWord, words, onChangeEv, onTypeE
     const chosenWord = words.find((word) => word.label === value?.label)
     if (chosenWord) {
       setInputValue(chosenWord.label);
-      onChangeEv(chosenWord.label);
+      debouncedOnChangeEv(chosenWord.label);
     }
   }
 
@@ -59,7 +60,6 @@ export default function WordFuzzySearch({ chosenWord, words, onChangeEv, onTypeE
           sx={{ width: 300 }}
           renderInput={(params: AutocompleteRenderInputParams) => <TextField {...params} label="Search" />}
         />
-
       </div>
     </div>
   )
