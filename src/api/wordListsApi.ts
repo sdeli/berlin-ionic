@@ -1,7 +1,7 @@
 import { AddSenseToWordlistsDto, AddWordToSearchHistoryDto, CreateSenseListDto, SenseListDto } from '../dto';
 import httpClient from './httpClient';
 
-const url = 'http://localhost:3000/sense-list';
+const url = '/sense-list';
 
 export async function fetchAllWordLists() {
   const response = await httpClient.get<SenseListDto[]>(url)

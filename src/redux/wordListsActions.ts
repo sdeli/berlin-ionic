@@ -63,14 +63,15 @@ export const addSenseToWordlistsAction = (dto: AddSenseToWordlistsDto): ThunkAct
   }
 }
 
-export const removeSenseFromWordlistAction = (lineId: string, listId: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+export const removeSenseFromWordlistAction = (lineId: string, listId: string): ThunkAction<Promise<boolean>, RootState, unknown, AnyAction> => async (dispatch) => {
   try {
     const list = await removeSenseFromWordlist(lineId, listId)
     dispatch(wordListsSlice.actions.replaceOne(list))
+    return true;
   } catch (error) {
     console.log('error')
     console.log(error)
-    console.log('busted')
+    return false
   }
 }
 

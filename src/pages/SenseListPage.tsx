@@ -14,6 +14,7 @@ import reactLogo from '../assets/react.svg';
 import style from './SenseListPage.module.scss';
 import { highlightChosenWord } from '../libs/utils';
 import { deleteWordByLineAction } from '../redux/wordActions';
+import toastService from '../libs/toastService';
 
 const SenseListPage = () => {
   const user = useSelector(selectUser);
@@ -38,9 +39,18 @@ const SenseListPage = () => {
   const removeSenseFromWordlist = (lineId: string, listId: string) => {
     const isAddedWord = activeList.title === DefaultListNamesDto.YourWords;
     if (isAddedWord) {
-      dispatch(deleteWordByLineAction({ userId: user.id, lineId: lineId }, listId));
+      dispatch(deleteWordByLineAction({ userId: user.id, lineId: lineId }, listId))
+        .then((succ) => {
+          if (succ) {
+            toastService.showSuccessToast('Word has been succesfully deleted!');
+          }
+        })
     } else {
-      dispatch(removeSenseFromWordlistAction(lineId, listId));
+      dispatch(removeSenseFromWordlistAction(lineId, listId)).then((succ) => {
+        if (succ) {
+          toastService.showSuccessToast('Word has been succesfully deleted!');
+        }
+      })
     }
   }
 

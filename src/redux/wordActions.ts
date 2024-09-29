@@ -7,7 +7,7 @@ import { AddWordDto, AddWordToSearchHistoryDto, deleteWordDto } from '../dto';
 import { fetchWordlistsByUserIdAction } from './wordListsActions';
 import { wordListsSlice } from './wordListsSlice';
 
-export const fetchWordsAction = (userId: string, searchedWord?: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+export const fetchWordsAction = (userId: string, searchedWord?: string): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => async (dispatch) => {
   searchedWord = searchedWord || '';
   try {
     const words = await fetchAllWords({ text: searchedWord, limit: 10, userId });
@@ -18,14 +18,16 @@ export const fetchWordsAction = (userId: string, searchedWord?: string): ThunkAc
   }
 }
 
-export const deleteWordByLineAction = (dto: deleteWordDto, listId: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+export const deleteWordByLineAction = (dto: deleteWordDto, listId: string): ThunkAction<Promise<boolean>, RootState, unknown, AnyAction> => async (dispatch) => {
   try {
     const wordId = await deleteWordByLine(dto);
     dispatch(wordSlice.actions.delete(wordId));
     dispatch(wordListsSlice.actions.deleteLine({ listId, lineId: dto.lineId }));
+    return true;
   } catch (error) {
     console.log('error')
     console.log(error)
+    return false;
   }
 }
 
