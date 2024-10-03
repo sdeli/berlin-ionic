@@ -4,18 +4,32 @@ import toastService from '../libs/toastService';
 import store from '../redux/store';
 import { isPlatform } from '@ionic/react';
 
-const isLocalEnv = import.meta.env.VITE_ENV === 'local';
+const env = import.meta.env as unknown as DotEnv;
+
+const isLocalEnv = env.VITE_ENV === Envs.local;
 let baseURL: string;
+
 if (isLocalEnv) {
   const isMobile = isPlatform('ios') || isPlatform('android');
   if (isMobile) {
-    baseURL = import.meta.env.VITE_DEV_MOBILE_BACKEND_URL as string;
+    baseURL = env.VITE_DEV_MOBILE_BACKEND_URL as string;
   } else {
-    baseURL = import.meta.env.VITE_DEV_WEB_BACKEND_URL as string;
+    baseURL = env.VITE_DEV_WEB_BACKEND_URL as string;
   }
-} else {
-  baseURL = import.meta.env.VITE_BACKEND_URL as string;
 }
+
+const isPreprodEnv = env.VITE_ENV === Envs.preprod;
+if (isPreprodEnv) {
+  baseURL = env.VITE_PREPROD_BACKEND_URL as string;
+}
+
+const isProdEnv = env.VITE_ENV === Envs.prod;
+if (isProdEnv) {
+  baseURL = env.VITE_ROD_BACKEND_URL as string;
+} else {
+  throw new Error('Env failure')
+}
+
 const httpClient = axios.create({
   baseURL,
   timeout: 10000,
