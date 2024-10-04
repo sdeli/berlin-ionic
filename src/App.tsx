@@ -34,6 +34,14 @@ import React from 'react';
 import { ProtectedPageGuard, UnprotectedPageGuard } from './route-guards';
 import SenseListPage from './pages/SenseListPage';
 import { WordListPage } from './pages/WordListsPage';
+import { DotEnv } from './types';
+
+const env = import.meta.env as unknown as DotEnv;
+
+if (!env.VITE_ENV) {
+  // @ts-ignore
+  env.VITE_ENV = window.SERVER_DATA.ENV as string
+}
 
 setupIonicReact({ mode: 'ios' });
 
