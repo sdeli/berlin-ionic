@@ -1,10 +1,10 @@
-enum Envs {
+export enum Envs {
   prod = "prod",
   preprod = "preprod",
   local = "local",
 }
 
-interface DotEnv {
+export interface DotEnv {
   VITE_ENV: string
   VITE_DEV_WEB_BACKEND_URL: string
   VITE_DEV_MOBILE_BACKEND_URL: string

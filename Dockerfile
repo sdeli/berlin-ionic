@@ -1,0 +1,30 @@
+FROM node:18 AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+COPY . .
+
+ARG VITE_DEV_WEB_BACKEND_URL
+ARG VITE_DEV_MOBILE_BACKEND_URL
+ARG VITE_PREPROD_BACKEND_URL
+ARG VITE_PROD_BACKEND_URL
+
+ENV VITE_DEV_WEB_BACKEND_URL=$VITE_DEV_WEB_BACKEND_URL
+ENV VITE_DEV_MOBILE_BACKEND_URL=$VITE_DEV_MOBILE_BACKEND_URL
+ENV VITE_PREPROD_BACKEND_URL=$VITE_PREPROD_BACKEND_URL
+ENV VITE_PROD_BACKEND_URL=$VITE_PROD_BACKEND_URL
+
+RUN npm run build
+
+FROM nginx:alpine
+
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY scripts/entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+EXPOSE 80
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]

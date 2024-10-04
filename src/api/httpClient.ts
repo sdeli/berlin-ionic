@@ -3,32 +3,9 @@ import { setIsloadingAction } from '../redux/AppActions';
 import toastService from '../libs/toastService';
 import store from '../redux/store';
 import { isPlatform } from '@ionic/react';
+import { DotEnv, Envs } from '../types';
 
-const env = import.meta.env as unknown as DotEnv;
-
-const isLocalEnv = env.VITE_ENV === Envs.local;
-let baseURL: string;
-
-if (isLocalEnv) {
-  const isMobile = isPlatform('ios') || isPlatform('android');
-  if (isMobile) {
-    baseURL = env.VITE_DEV_MOBILE_BACKEND_URL as string;
-  } else {
-    baseURL = env.VITE_DEV_WEB_BACKEND_URL as string;
-  }
-}
-
-const isPreprodEnv = env.VITE_ENV === Envs.preprod;
-if (isPreprodEnv) {
-  baseURL = env.VITE_PREPROD_BACKEND_URL as string;
-}
-
-const isProdEnv = env.VITE_ENV === Envs.prod;
-if (isProdEnv) {
-  baseURL = env.VITE_ROD_BACKEND_URL as string;
-} else {
-  throw new Error('Env failure')
-}
+const baseURL = getBaseUrl();
 
 const httpClient = axios.create({
   baseURL,
@@ -57,5 +34,33 @@ httpClient.interceptors.response.use(function (response) {
   toastService.showErrorToast('Request Error');
   return Promise.reject(error);
 });
+
+
+function getBaseUrl() {
+  const env = import.meta.env as unknown as DotEnv;
+  console.log('env')
+  console.log(env);
+  const isLocalEnv = env.VITE_ENV === Envs.local;
+  if (isLocalEnv) {
+    const isMobile = isPlatform('ios') || isPlatform('android');
+    if (isMobile) {
+      return env.VITE_DEV_MOBILE_BACKEND_URL;
+    } else {
+      return env.VITE_DEV_WEB_BACKEND_URL;
+    }
+  }
+
+  const isPreprodEnv = env.VITE_ENV === Envs.preprod;
+  if (isPreprodEnv) {
+    return env.VITE_PREPROD_BACKEND_URL;
+  }
+
+  const isProdEnv = env.VITE_ENV === Envs.prod;
+  if (isProdEnv) {
+    return env.VITE_ROD_BACKEND_URL;
+  } else {
+    throw new Error('Env failure')
+  }
+}
 
 export default httpClient;
