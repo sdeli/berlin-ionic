@@ -46,20 +46,10 @@ function getBaseUrl() {
     if (isMobile) {
       return env.VITE_DEV_MOBILE_BACKEND_URL;
     } else {
-      return env.VITE_DEV_WEB_BACKEND_URL;
+      return env.VITE_DEV_URL;
     }
-  }
-
-  const isPreprodEnv = env.VITE_ENV === Envs.preprod;
-  if (isPreprodEnv) {
-    return env.VITE_PREPROD_BACKEND_URL;
-  }
-
-  const isProdEnv = env.VITE_ENV === Envs.prod;
-  if (isProdEnv) {
-    return env.VITE_ROD_BACKEND_URL;
   } else {
-    throw new Error('Env failure')
+    return env.VITE_URL
   }
 }
 

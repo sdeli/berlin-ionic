@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -z "$VITE_ENV" ]; then
+  echo "Error: VITE_ENV is not set."
+  exit 1
+fi
+
 INDEX_FILE="/usr/share/nginx/html/index.html"
 # INDEX_FILE="./index.html" # for dev I leave it here
 
