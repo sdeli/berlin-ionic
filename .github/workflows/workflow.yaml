@@ -1,7 +1,7 @@
 name: Build and push frontend to DigitalOcean Container Registry
 
 env:
-  IMAGE_TAG: '0.1'
+  IMAGE_TAG: '0.2'
 
 on:
   push:
@@ -30,6 +30,7 @@ jobs:
         docker build \
           --build-arg VITE_PREPROD_BACKEND_URL=${{ secrets.VITE_PREPROD_BACKEND_URL }} \
           --build-arg VITE_PROD_BACKEND_URL=${{ secrets.VITE_PROD_BACKEND_URL }} \
+
           -t registry.digitalocean.com/artifact-store/berlin:berlin-ionic-${{env.IMAGE_TAG}} .
 
     - name: Push to DigitalOcean Container Registry
