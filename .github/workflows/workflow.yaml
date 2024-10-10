@@ -1,12 +1,9 @@
 name: Build and push frontend to DigitalOcean Container Registry
 
 env:
-  IMAGE_TAG: '0.3'
+  IMAGE_TAG: '0.5'
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
