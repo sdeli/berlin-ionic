@@ -1,4 +1,4 @@
-# Required ENV variables: VITE_ENV, VITE_FRONT_URL, VITE_BACKEND_URL, etc.
+# Required ENV variables: VITE_ENV, VITE_URL
 FROM node:18 AS build
 
 WORKDIR /app
