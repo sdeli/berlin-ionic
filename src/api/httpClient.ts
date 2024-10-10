@@ -5,6 +5,24 @@ import store from '../redux/store';
 import { isPlatform } from '@ionic/react';
 import { DotEnv, Envs } from '../types';
 
+const env = import.meta.env as unknown as DotEnv;
+console.log('import env')
+console.log(import.meta.env);
+console.log(!env.VITE_ENV);
+if (!env.VITE_ENV) {
+  console.log(true);
+  // @ts-ignore
+  env.VITE_ENV = window.SERVER_DATA.VITE_ENV as string
+}
+
+if (!env.VITE_URL) {
+  console.log(true);
+  // @ts-ignore
+  env.VITE_URL = window.SERVER_DATA.VITE_URL as string
+}
+
+console.log('env')
+console.log(env);
 const baseURL = getBaseUrl();
 
 const httpClient = axios.create({
@@ -41,6 +59,8 @@ function getBaseUrl() {
   console.log('env')
   console.log(env);
   const isLocalEnv = env.VITE_ENV === Envs.local;
+  console.log('isLocalEnv')
+  console.log(isLocalEnv);
   if (isLocalEnv) {
     const isMobile = isPlatform('ios') || isPlatform('android');
     if (isMobile) {
